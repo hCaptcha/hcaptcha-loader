@@ -23,7 +23,6 @@ jobs:
           envkey_DEBUG: false
           envkey_SENTRY_DSN_TOKEN: ${{ secrets.SENTRY_DSN_TOKEN  }}
           file_name: .env
-          fail_on_empty: false
       - name: Build lib
         shell: bash
         run: pnpm run build:lib
