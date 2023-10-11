@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>hCAPTCHA Loader Demo</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+    <link rel="stylesheet" href="./assets/css/index.css">
+
+    <script type="module">
+      import { hCaptchaLoader } from '../../dist/index.mjs';
+
+      try {
+        const element = document.getElementById('captcha-wrapper');
+
+        const hcaptcha = await hCaptchaLoader({ sentry: false });
+        hcaptcha.render(element, {
+          sitekey: '10000000-ffff-ffff-ffff-000000000001',
+        });
+      } catch(error) {
+        console.log(error);
+      }
+
+    </script>
+  </head>
+    <body>
+    <div id="Page-Container">
+      <div id="Form-Container">
+        <form id="Form-Example" method="POST" action="">
+
+          <div class="input-wrapper">
+            <label for="first_name">First Name</label>
+            <input id="first_name" maxlength="256" name="first_name" placeholder="First Name" required="required" type="text" value="">
+          </div>
+
+          <div class="input-wrapper">
+            <label for="last_name">Last Name</label>
+            <input id="last_name" name="last_name" placeholder="Last Name" type="text" value="">
+          </div>
+
+          <div class="input-wrapper">
+            <label for="email">Email Address</label>
+            <input id="email" name="email" placeholder="Email" type="text" value="">
+          </div>
+
+          <div id="captcha-wrapper" data-testid="hCaptcha">
+          </div>
+
+          <div id="form-submit">
+            <div class="text white">Submit</div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
