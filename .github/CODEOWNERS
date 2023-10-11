@@ -1,11 +1,11 @@
 # These owners will be the default owners for everything in
 # the repo. Unless a later match takes precedence,they will
 # be requested for review when someone opens a pull request.
-*   @IntuitionMachines/react-reviewers
+*   @hCaptcha/react-reviewers
 
 # Javascript Owners
-*.js    @IntuitionMachines/react-reviewers
+*.js    @hCaptcha/react-reviewers
 
 # Github Action Owners
-.github/actions    @IntuitionMachines/react-reviewers
-.github/workflow   @IntuitionMachines/react-reviewers
+.github/actions    @hCaptcha/react-reviewers
+.github/workflow   @hCaptcha/react-reviewers

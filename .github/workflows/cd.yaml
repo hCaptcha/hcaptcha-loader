@@ -25,6 +25,6 @@ jobs:
           SENTRY_DSN_TOKEN: ${{ secrets.SENTRY_DSN_TOKEN  }}
       - name: Publish package
         shell: bash
-        run: pnpm publish --no-git-checks
+        run: pnpm publish --no-git-checks --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN  }}
