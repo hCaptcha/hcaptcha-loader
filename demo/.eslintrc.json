@@ -1,0 +1,12 @@
+{
+  "root": false,
+  "extends": [
+    "../.eslintrc.json"
+  ],
+  "env": {
+    "browser": true
+  },
+  "plugins": [
+    "html"
+  ]
+}

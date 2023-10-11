@@ -1,0 +1,137 @@
+html, body {
+    padding: 0;
+    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+}
+
+* {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+    -ms-user-select: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-text-size-adjust: none;
+    outline: none;
+    -webkit-font-smoothing: antialiased;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+    -moz-user-select: auto;
+    -webkit-user-select: auto;
+    -o-user-select: auto;
+    -ms-user-select: auto;
+}
+
+
+#Page-Container {
+    position: absolute;
+
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+    background: #fafafa;
+}
+
+#Form-Container {
+    position: absolute;
+
+    width: 320px;
+    height: 400px;
+
+    top: 50%;
+    left: 50%;
+    margin-left: -160px;
+    margin-top: -200px;
+
+    border-radius: 5px;
+
+    color: #333;
+    font-family: canada-type-gibson, sans-serif;
+    background-color: #fff;
+}
+
+#Form-Example {
+
+    border-radius: 10px;
+    width: 320px;
+    height: 380px;
+
+    position: absolute;
+    top: 50%;
+    margin-top: -190px;
+
+}
+
+input {
+    border-radius: 4px;
+    background-color: #fafafa;
+    font-size: 16px;
+    font-weight: 300;
+    padding: 8px 12px;
+    color: #333;
+    border: 1px solid #ccc;
+
+    box-sizing: border-box;
+    font-family: canada-type-gibson, sans-serif;
+}
+
+#form-submit {
+    width: 125px;
+    height: 50px;
+    background-color: #6549c7;
+    border-radius: 5px;
+    cursor: pointer;
+
+    position: absolute;
+    left: 50%;
+    margin-left: -62.5px;
+}
+
+#form-submit:hover {
+    background-color: #464252;
+}
+
+#form-submit .text {
+    font-weight: 700;
+    width: 100%;
+    text-align: center;
+    height: 50px;
+    line-height: 50px;
+}
+
+.white {
+    color: #fff;
+}
+
+.input-wrapper {
+    position: relative;
+
+    height: 60px;
+    width: 300px;
+    margin: 0 auto;
+    margin-bottom: 15px;
+}
+
+.input-wrapper label {
+    position: absolute;
+    top: 0;
+}
+
+.input-wrapper input {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+#captcha-wrapper {
+    width: 302px;
+    height: 75px;
+    margin: 0 auto;
+    margin-bottom: 25px;
+}
