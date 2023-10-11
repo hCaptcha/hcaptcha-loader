@@ -16,13 +16,17 @@ jobs:
         uses: actions/checkout@v3
       - name: Setup environment and dependencies
         uses: ./.github/actions/setup
+      - name: Create .env file
+        uses: SpicyPizza/create-envfile@v2.0
+        with:
+          envkey_BUILD: production
+          envkey_DEBUG: false
+          envkey_SENTRY_DSN_TOKEN: ${{ secrets.SENTRY_DSN_TOKEN  }}
+          file_name: .env
+          fail_on_empty: false
       - name: Build lib
         shell: bash
         run: pnpm run build:lib
-        env:
-          BUILD: production
-          DEBUG: false
-          SENTRY_DSN_TOKEN: ${{ secrets.SENTRY_DSN_TOKEN  }}
       - name: Publish package
         shell: bash
         run: pnpm publish --no-git-checks --access public
