@@ -9,7 +9,7 @@ import type { ILoaderParams } from './types';
 export const hCaptchaScripts = [];
 
 // Generate hCaptcha API script
-export function hCaptchaLoader(params: ILoaderParams = { cleanup: true }): Promise<any> {
+export function hCaptchaLoader(params: ILoaderParams = { cleanup: true }): Promise<typeof hcaptcha> {
   const sentry = initSentry(params.sentry);
 
   try {
