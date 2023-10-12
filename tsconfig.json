@@ -25,6 +25,12 @@
       "node_modules/@types"
     ],
 
+    "types": [
+      "node",
+      "jest",
+      "@hcaptcha/types"
+    ],
+
     "lib": [
       "dom",
       "dom.iterable",
