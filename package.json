@@ -11,12 +11,16 @@
   "type": "module",
   "main": "dist/index.mjs",
   "exports": {
-    "import": "dist/index.mjs",
-    "require": "dis/index.cjs"
+    "." : {
+      "import": "dist/index.mjs",
+      "require": "dis/index.cjs"
+    },
+    "./src": "./lib/src"
   },
   "files": [
     "README.md",
-    "dist"
+    "dist",
+    "lib/src"
   ],
   "repository": {
     "type": "git",
