@@ -4,7 +4,12 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+
+    "typeRoots": [
+      "node_modules/@hcaptcha",
+      "node_modules/@types"
+    ]
   },
 
   "types": [
@@ -14,7 +19,6 @@
   ],
 
   "include": [
-    "./jest.setup.ts",
     "./src/**/*"
   ],
 

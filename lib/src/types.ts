@@ -1,3 +1,5 @@
+import '@hcaptcha/types';
+
 export interface IScriptParams {
     scriptLocation?: HTMLElement;
     apihost?: string;
