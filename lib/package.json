@@ -4,7 +4,7 @@
   "type": "module",
   "main": "src/index.ts",
   "scripts": {
-    "compile:build": "rm -rf dist && node ./esbuild.config.js && tsc -p tsconfig.types.json",
+    "compile:build": "rm -rf ../dist && node ./esbuild.config.js && tsc -p tsconfig.types.json",
     "compile:watch": "WATCH=true node ./esbuild.config.js",
     "fix:lint": "eslint -c .eslintrc.json --fix ./src",
     "test:lint": "eslint -c .eslintrc.json ./src",
