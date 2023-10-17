@@ -33,7 +33,7 @@ export function initSentry(sentry: boolean) {
   hub = new Sentry.Hub(client);
 
   hub.configureScope(function (scope) {
-    scope.setTag('loader', true);
+    scope.setTag('source', '@hCaptcha/loader');
   });
 
   return hub;
