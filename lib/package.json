@@ -4,11 +4,11 @@
   "type": "module",
   "main": "src/index.ts",
   "scripts": {
-    "compile:build": "node ./esbuild.config.js",
+    "compile:build": "rm -rf ../dist && node ./esbuild.config.js && tsc -p tsconfig.types.json",
     "compile:watch": "WATCH=true node ./esbuild.config.js",
     "fix:lint": "eslint -c .eslintrc.json --fix ./src",
     "test:lint": "eslint -c .eslintrc.json ./src",
-    "test:types": "tsc --project ./tsconfig.json",
+    "test:types": "tsc -p tsconfig.json",
     "test:unit": "jest"
   },
   "dependencies": {

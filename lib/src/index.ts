@@ -1,1 +1,1 @@
-export { hCaptchaLoader } from './loader.js';
+export { hCaptchaLoader } from './loader';
