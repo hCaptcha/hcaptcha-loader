@@ -4,9 +4,10 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "isolatedModules": true,
+    "noEmit": true
   },
-
   "types": [
     "node",
     "jest",
@@ -14,7 +15,6 @@
   ],
 
   "include": [
-    "./jest.setup.ts",
     "./src/**/*"
   ],
 
