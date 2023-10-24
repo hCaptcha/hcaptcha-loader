@@ -11,7 +11,7 @@
     "test:types": "tsc -p tsconfig.json",
     "test:unit": "jest"
   },
-  "peerDependencies": {
+  "dependencies": {
     "@sentry/browser": "^7.73.0"
   },
   "devDependencies": {
