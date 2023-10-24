@@ -40,9 +40,9 @@ export function getSentry(): SentryHub | null {
   return getSentryHubWrapper(hub);
 }
 
-function setScopeTag(source: string = '@hCaptcha/loader') {
+function setScopeTag(value: string = '@hCaptcha/loader', key: string = 'source') {
   hub?.configureScope(function(scope) {
-    scope.setTag('source', source);
+    scope.setTag(key, value);
   });
 }
 
