@@ -1,19 +1,21 @@
 import * as Sentry from '@sentry/browser';
 
+import { SentryHub } from './types';
+
 const SENTRY_DSN = process.env.SENTRY_DSN_TOKEN;
 
 let hub = null;
 
-export function initSentry(sentry: boolean) {
+export function initSentry(sentry: boolean): SentryHub | null {
 
   // Sentry disabled in params
   if (sentry === false) {
-    return;
+    return null;
   }
 
   // Client was already created
   if (hub) {
-    return hub;
+    return getSentryHubWrapper(hub);
   }
 
   const client = new Sentry.BrowserClient({
@@ -31,14 +33,24 @@ export function initSentry(sentry: boolean) {
   });
 
   hub = new Sentry.Hub(client);
-
-  hub.configureScope(function (scope) {
-    scope.setTag('source', '@hCaptcha/loader');
-  });
-
-  return hub;
+  return getSentryHubWrapper(hub);
 }
 
-export function getSentry() {
-  return hub;
+export function getSentry(): SentryHub | null {
+  return getSentryHubWrapper(hub);
+}
+
+function setScopeTag(source: string = '@hCaptcha/loader') {
+  hub?.configureScope(function(scope) {
+    scope.setTag('source', source);
+  });
+}
+
+function getSentryHubWrapper(sentryHub): SentryHub | null {
+  return {
+    captureMessage: (message) => sentryHub.captureMessage(message),
+    captureException: (params) => sentryHub.captureException(params),
+    addBreadcrumb: (params) => sentryHub.addBreadcrumb(params),
+    setTag: (source) => setScopeTag(source),
+  };
 }

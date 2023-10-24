@@ -14,6 +14,7 @@ export function hCaptchaLoader(params: ILoaderParams = { cleanup: true }): Promi
 
   try {
 
+    sentry?.setTag();
     sentry?.addBreadcrumb({
       category: 'script',
       message: 'hCaptcha loader params',
@@ -62,6 +63,8 @@ export function hCaptchaLoader(params: ILoaderParams = { cleanup: true }): Promi
             reportapi: params.reportapi,
             endpoint: params.endpoint,
             host: params.host,
+            recaptchacompat: params.recaptchacompat,
+            hl: params.hl,
           });
 
           await fetchScript({ query, ...params });
@@ -77,7 +80,7 @@ export function hCaptchaLoader(params: ILoaderParams = { cleanup: true }): Promi
             message: 'hCaptcha failed to load',
             level: 'info'
           });
-          sentry?.captureMessage(error);
+          sentry?.captureException(error);
           reject(new Error(SCRIPT_ERROR));
         }
       }

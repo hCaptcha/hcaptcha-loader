@@ -16,4 +16,14 @@ export interface ILoaderParams extends IScriptParams {
     reportapi?: string;
     endpoint?: string;
     host?: string;
+    recaptchacompat?: string;
+    hl?: string;
+    cleanup?: boolean;
+}
+
+export interface SentryHub {
+    addBreadcrumb: (params: object) => void,
+    captureException: (params: any) => void,
+    captureMessage: (message: string) => void,
+    setTag: (source?: string) => void,
 }
