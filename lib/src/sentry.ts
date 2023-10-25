@@ -40,8 +40,8 @@ export function initSentry(
   return getSentryHubWrapper(hub, scopeTag);
 }
 
-export function getSentry(tag): SentryHub | null {
-  return getSentryHubWrapper(hub, tag);
+export function getSentry(): SentryHub | null {
+  return getSentryHubWrapper(hub);
 }
 
 function getSentryHubWrapper(
