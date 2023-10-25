@@ -3,8 +3,8 @@ export interface IScriptParams {
     apihost?: string;
     loadAsync?: boolean;
     cleanup?: boolean;
-    query?: string
-    crossOrigin?: string
+    query?: string;
+    crossOrigin?: string;
 }
 
 export interface ILoaderParams extends IScriptParams {
@@ -22,8 +22,12 @@ export interface ILoaderParams extends IScriptParams {
 }
 
 export interface SentryHub {
-    addBreadcrumb: (params: object) => void,
-    captureException: (params: any) => void,
-    captureMessage: (message: string) => void,
-    setTag: (source?: string) => void,
+    addBreadcrumb: (breadcrumb: object) => void;
+    captureException: (e: any) => void;
+    captureMessage: (message: string) => void;
+}
+
+export interface ScopeTag {
+    key: string;
+    value: string;
 }

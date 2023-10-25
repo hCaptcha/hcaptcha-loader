@@ -1,12 +1,15 @@
 import * as Sentry from '@sentry/browser';
 
-import { SentryHub } from './types';
+import { ScopeTag, SentryHub } from './types';
 
 const SENTRY_DSN = process.env.SENTRY_DSN_TOKEN;
 
 let hub = null;
 
-export function initSentry(sentry: boolean): SentryHub | null {
+export function initSentry(
+  sentry: boolean,
+  scopeTag?: ScopeTag
+): SentryHub | null {
 
   // Sentry disabled in params
   if (sentry === false) {
@@ -15,7 +18,7 @@ export function initSentry(sentry: boolean): SentryHub | null {
 
   // Client was already created
   if (hub) {
-    return getSentryHubWrapper(hub);
+    return getSentryHubWrapper(hub, scopeTag);
   }
 
   const client = new Sentry.BrowserClient({
@@ -33,24 +36,36 @@ export function initSentry(sentry: boolean): SentryHub | null {
   });
 
   hub = new Sentry.Hub(client);
-  return getSentryHubWrapper(hub);
+
+  return getSentryHubWrapper(hub, scopeTag);
 }
 
-export function getSentry(): SentryHub | null {
-  return getSentryHubWrapper(hub);
+export function getSentry(tag): SentryHub | null {
+  return getSentryHubWrapper(hub, tag);
 }
 
-function setScopeTag(value: string = '@hCaptcha/loader', key: string = 'source') {
-  hub?.configureScope(function(scope) {
-    scope.setTag(key, value);
-  });
-}
+function getSentryHubWrapper(
+  sentryHub,
+  tag: ScopeTag = {
+    key: 'source',
+    value: '@hCaptcha/loader'
+  }): SentryHub {
 
-function getSentryHubWrapper(sentryHub): SentryHub | null {
   return {
-    captureMessage: (message) => sentryHub.captureMessage(message),
-    captureException: (params) => sentryHub.captureException(params),
-    addBreadcrumb: (params) => sentryHub.addBreadcrumb(params),
-    setTag: (source) => setScopeTag(source),
+    addBreadcrumb: (breadcrumb) => sentryHub.addBreadcrumb(breadcrumb),
+    captureMessage: (message) => {
+      sentryHub.withScope(function (scope) {
+        scope.setTag(tag.key, tag.value);
+
+        sentryHub.captureMessage(message);
+      });
+    },
+    captureException: (e) => {
+      sentryHub.withScope(function (scope) {
+        scope.setTag(tag.key, tag.value);
+
+        sentryHub.captureException(e);
+      });
+    }
   };
 }

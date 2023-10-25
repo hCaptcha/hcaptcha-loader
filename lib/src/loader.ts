@@ -14,12 +14,10 @@ export function hCaptchaLoader(params: ILoaderParams = { cleanup: true }): Promi
 
   try {
 
-    sentry?.setTag();
     sentry?.addBreadcrumb({
       category: 'script',
       message: 'hCaptcha loader params',
       data: params,
-      level: 'info'
     });
 
     const element = getMountElement(params.scriptLocation);
@@ -30,7 +28,6 @@ export function hCaptchaLoader(params: ILoaderParams = { cleanup: true }): Promi
       sentry?.addBreadcrumb({
         category: 'script',
         message: 'hCaptcha already loaded',
-        level: 'info'
       });
 
       // API was already requested
@@ -47,7 +44,6 @@ export function hCaptchaLoader(params: ILoaderParams = { cleanup: true }): Promi
             sentry?.addBreadcrumb({
               category: 'hCaptcha:script',
               message: 'hCaptcha script called onload function',
-              level: 'info'
             });
 
             // Resolve loader once hCaptcha library says its ready
@@ -72,13 +68,11 @@ export function hCaptchaLoader(params: ILoaderParams = { cleanup: true }): Promi
           sentry?.addBreadcrumb({
             category: 'hCaptcha:script',
             message: 'hCaptcha loaded',
-            level: 'info'
           });
         } catch(error) {
           sentry?.addBreadcrumb({
             category: 'hCaptcha:script',
             message: 'hCaptcha failed to load',
-            level: 'info'
           });
           sentry?.captureException(error);
           reject(new Error(SCRIPT_ERROR));
