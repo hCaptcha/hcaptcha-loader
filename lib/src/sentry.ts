@@ -1,19 +1,24 @@
 import * as Sentry from '@sentry/browser';
 
+import { ScopeTag, SentryHub } from './types';
+
 const SENTRY_DSN = process.env.SENTRY_DSN_TOKEN;
 
 let hub = null;
 
-export function initSentry(sentry: boolean) {
+export function initSentry(
+  sentry: boolean,
+  scopeTag?: ScopeTag
+): SentryHub | null {
 
   // Sentry disabled in params
   if (sentry === false) {
-    return;
+    return null;
   }
 
   // Client was already created
   if (hub) {
-    return hub;
+    return getSentryHubWrapper(hub, scopeTag);
   }
 
   const client = new Sentry.BrowserClient({
@@ -32,13 +37,35 @@ export function initSentry(sentry: boolean) {
 
   hub = new Sentry.Hub(client);
 
-  hub.configureScope(function (scope) {
-    scope.setTag('source', '@hCaptcha/loader');
-  });
-
-  return hub;
+  return getSentryHubWrapper(hub, scopeTag);
 }
 
-export function getSentry() {
-  return hub;
+export function getSentry(tag?: ScopeTag): SentryHub | null {
+  return getSentryHubWrapper(hub, tag);
+}
+
+export function getSentryHubWrapper(
+  sentryHub,
+  tag: ScopeTag = {
+    key: 'source',
+    value: '@hCaptcha/loader'
+  }): SentryHub {
+
+  return {
+    addBreadcrumb: (breadcrumb) => sentryHub.addBreadcrumb(breadcrumb),
+    captureMessage: (message) => {
+      sentryHub.withScope(function (scope) {
+        scope.setTag(tag.key, tag.value);
+
+        sentryHub.captureMessage(message);
+      });
+    },
+    captureException: (e) => {
+      sentryHub.withScope(function (scope) {
+        scope.setTag(tag.key, tag.value);
+
+        sentryHub.captureException(e);
+      });
+    }
+  };
 }

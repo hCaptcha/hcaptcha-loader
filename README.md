@@ -30,17 +30,19 @@ const { response } = await hcaptcha.execute({ async: true });
 ```
 
 ### Props
-| Name             | Values/Type | Required | Default         | Description                                                                                                                                               |
-|------------------|-------------|----------|-----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `loadAsync`      | Boolean     | No       | `true`          | Set if the script should be loaded asynchronously.                                                                                                        |
-| `cleanup`        | Boolean     | No       | `true`          | Remove script tag after setup.                                                                                                                            |
-| `crossOrigin`    | String      | No       | `-`             | Set script cross origin attribute such as "anonymous".                                                                                                    |
-| `scriptLocation` | HTMLElement | No       | `document.head` | Location of where to append the script tag. Make sure to add it to an area that will persist to prevent loading multiple times in the same document view. |
-| `apihost`        | String      | No       | `-`             | See enterprise docs.                                                                                                                                      |
-| `assethost`      | String      | No       | `-`             | See enterprise docs.                                                                                                                                      |
-| `endpoint`       | String      | No       | `-`             | See enterprise docs.                                                                                                                                      |
-| `host`           | String      | No       | `-`             | See enterprise docs.                                                                                                                                      |
-| `imghost`        | String      | No       | `-`             | See enterprise docs.                                                                                                                                      |
-| `reportapi`      | String      | No       | `-`             | See enterprise docs.                                                                                                                                      |
-| `sentry`         | Boolean     | No       | `-`             | See enterprise docs.                                                                                                                                      |
-| `custom`         | Boolean     | No       | `-`             | See enterprise docs.                                                                                                                                      |
+| Name              | Values/Type | Required | Default         | Description                                                                                                                                               |
+|-------------------|-------------|----------|-----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `loadAsync`       | Boolean     | No       | `true`          | Set if the script should be loaded asynchronously.                                                                                                        |
+| `cleanup`         | Boolean     | No       | `true`          | Remove script tag after setup.                                                                                                                            |
+| `crossOrigin`     | String      | No       | `-`             | Set script cross origin attribute such as "anonymous".                                                                                                    |
+| `scriptLocation`  | HTMLElement | No       | `document.head` | Location of where to append the script tag. Make sure to add it to an area that will persist to prevent loading multiple times in the same document view. |
+| `apihost`         | String      | No       | `-`             | See enterprise docs.                                                                                                                                      |
+| `assethost`       | String      | No       | `-`             | See enterprise docs.                                                                                                                                      |
+| `endpoint`        | String      | No       | `-`             | See enterprise docs.                                                                                                                                      |
+| `hl`              | String      | No       | `-`             | See enterprise docs.                                                                                                                                      |
+| `host`            | String      | No       | `-`             | See enterprise docs.                                                                                                                                      |
+| `imghost`         | String      | No       | `-`             | See enterprise docs.                                                                                                                                      |
+| `recaptchacompat` | String      | No       | `-`             | See enterprise docs.                                                                                                                                      |
+| `reportapi`       | String      | No       | `-`             | See enterprise docs.                                                                                                                                      |
+| `sentry`          | Boolean     | No       | `-`             | See enterprise docs.                                                                                                                                      |
+| `custom`          | Boolean     | No       | `-`             | See enterprise docs.                                                                                                                                      |
