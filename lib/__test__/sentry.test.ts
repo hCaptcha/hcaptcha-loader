@@ -5,7 +5,7 @@ import {
   initSentry,
   getSentry,
   getSentryHubWrapper,
-} from '../src/sentry'; // Replace 'yourFileName' with the actual file name
+} from '../src/sentry';
 
 jest.mock('@sentry/browser', () => ({
   BrowserClient: jest.fn(),
