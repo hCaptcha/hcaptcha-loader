@@ -9,8 +9,8 @@
     "captcha"
   ],
   "type": "module",
-  "main": "dist/index.mjs",
-  "types": "dist/types/src/index.d.ts",
+  "main": "./dist/index.mjs",
+  "types": "./dist/types/src/index.d.ts",
   "exports": {
     "import": "./dist/index.mjs",
     "require": "./dist/index.cjs"
