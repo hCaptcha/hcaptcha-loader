@@ -38,7 +38,7 @@ describe('Sentry', () => {
     expect(hub).toBeTruthy();
   });
 
-  it('should not throw when Sentry Hub is false', () => {
+  it('should not throw when Sentry is false', () => {
     const sentryHubWrapper = getSentryHubWrapper(false);
 
     const testWrapperCall = () => {
