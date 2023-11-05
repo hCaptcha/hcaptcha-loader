@@ -13,7 +13,7 @@ export function initSentry(
 
   // Sentry disabled in params
   if (sentry === false) {
-    return getSentryHubWrapper(sentry, scopeTag);
+    return getSentryHubWrapper(sentry);
   }
 
   // Client was already created

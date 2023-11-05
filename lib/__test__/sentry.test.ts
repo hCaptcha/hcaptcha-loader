@@ -38,8 +38,8 @@ describe('Sentry', () => {
     expect(hub).toBeTruthy();
   });
 
-  it('should not throw when Sentry Hub is null', () => {
-    const sentryHubWrapper = getSentryHubWrapper(null);
+  it('should not throw when Sentry Hub is false', () => {
+    const sentryHubWrapper = getSentryHubWrapper(false);
 
     const testWrapperCall = () => {
       sentryHubWrapper.addBreadcrumb({ category: 'test' });
