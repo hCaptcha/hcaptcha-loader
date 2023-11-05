@@ -19,6 +19,9 @@ jest.mock('@sentry/browser', () => ({
   makeFetchTransport: jest.fn(),
   defaultStackParser: jest.fn(),
   withScope: jest.fn(),
+  addBreadcrumb: jest.fn(),
+  captureMessage: jest.fn(),
+  captureException: jest.fn(),
 }));
 
 const mockScope = {
@@ -38,11 +41,16 @@ describe('Sentry', () => {
     expect(hub).toBeTruthy();
   });
 
-  it('should return null if Sentry is disabled', () => {
-    const hub = initSentry(false);
-    expect(Sentry.BrowserClient).not.toHaveBeenCalled();
-    expect(Sentry.Hub).not.toHaveBeenCalled();
-    expect(hub).toBeNull();
+  it('should not throw when Sentry Hub is null', () => {
+    const sentryHubWrapper = getSentryHubWrapper(null);
+
+    const testWrapperCall = () => {
+      sentryHubWrapper.addBreadcrumb({ category: 'test' });
+      sentryHubWrapper.captureMessage('test message');
+      sentryHubWrapper.captureException('test error');
+    };
+
+    expect(testWrapperCall).not.toThrow();
   });
 
   it('should get initialized Sentry Hub', () => {
@@ -64,7 +72,7 @@ describe('Sentry', () => {
     };
 
     const tag = { key: 'testKey', value: 'testValue' };
-    const breadcrumb = { category: 'test breadcrumb' };
+    const breadcrumb = { category: 'test' };
 
     const sentryHubWrapper = getSentryHubWrapper(mockHub, tag);
 
