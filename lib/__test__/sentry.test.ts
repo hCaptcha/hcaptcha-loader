@@ -19,9 +19,6 @@ jest.mock('@sentry/browser', () => ({
   makeFetchTransport: jest.fn(),
   defaultStackParser: jest.fn(),
   withScope: jest.fn(),
-  addBreadcrumb: jest.fn(),
-  captureMessage: jest.fn(),
-  captureException: jest.fn(),
 }));
 
 const mockScope = {
