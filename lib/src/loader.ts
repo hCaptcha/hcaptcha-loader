@@ -14,7 +14,7 @@ export function hCaptchaLoader(params: ILoaderParams = { cleanup: true }): Promi
 
   try {
 
-    sentry?.addBreadcrumb({
+    sentry.addBreadcrumb({
       category: 'script',
       message: 'hCaptcha loader params',
       data: params,
@@ -25,7 +25,7 @@ export function hCaptchaLoader(params: ILoaderParams = { cleanup: true }): Promi
     const script = hCaptchaScripts.find(({ scope }) => scope === frame.window);
 
     if (script) {
-      sentry?.addBreadcrumb({
+      sentry.addBreadcrumb({
         category: 'script',
         message: 'hCaptcha already loaded',
       });
@@ -41,7 +41,7 @@ export function hCaptchaLoader(params: ILoaderParams = { cleanup: true }): Promi
 
           // Create global onload callback for the hCaptcha library to call
           frame.window[HCAPTCHA_LOAD_FN_NAME] = () => {
-            sentry?.addBreadcrumb({
+            sentry.addBreadcrumb({
               category: 'hCaptcha:script',
               message: 'hCaptcha script called onload function',
             });
@@ -65,16 +65,16 @@ export function hCaptchaLoader(params: ILoaderParams = { cleanup: true }): Promi
 
           await fetchScript({ query, ...params });
 
-          sentry?.addBreadcrumb({
+          sentry.addBreadcrumb({
             category: 'hCaptcha:script',
             message: 'hCaptcha loaded',
           });
         } catch(error) {
-          sentry?.addBreadcrumb({
+          sentry.addBreadcrumb({
             category: 'hCaptcha:script',
             message: 'hCaptcha failed to load',
           });
-          sentry?.captureException(error);
+          sentry.captureException(error);
           reject(new Error(SCRIPT_ERROR));
         }
       }
@@ -83,8 +83,8 @@ export function hCaptchaLoader(params: ILoaderParams = { cleanup: true }): Promi
     hCaptchaScripts.push({ promise, scope: frame.window });
 
     return promise;
-  } catch (e) {
-    sentry?.captureException(e);
+  } catch (error) {
+    sentry.captureException(error);
     return Promise.reject(new Error(SCRIPT_ERROR));
   }
 }

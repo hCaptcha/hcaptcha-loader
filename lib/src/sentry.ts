@@ -13,7 +13,7 @@ export function initSentry(
 
   // Sentry disabled in params
   if (sentry === false) {
-    return null;
+    return getSentryHubWrapper(sentry);
   }
 
   // Client was already created
@@ -52,8 +52,19 @@ export function getSentryHubWrapper(
   }): SentryHub {
 
   return {
-    addBreadcrumb: (breadcrumb) => sentryHub.addBreadcrumb(breadcrumb),
+
+    addBreadcrumb: (breadcrumb) => {
+      if (!sentryHub) {
+        return;
+      }
+
+      sentryHub.addBreadcrumb(breadcrumb);
+    },
     captureMessage: (message) => {
+      if (!sentryHub) {
+        return;
+      }
+
       sentryHub.withScope(function (scope) {
         scope.setTag(tag.key, tag.value);
 
@@ -61,6 +72,10 @@ export function getSentryHubWrapper(
       });
     },
     captureException: (e) => {
+      if (!sentryHub) {
+        return;
+      }
+
       sentryHub.withScope(function (scope) {
         scope.setTag(tag.key, tag.value);
 
