@@ -3,14 +3,13 @@ import { HCAPTCHA_LOAD_FN_NAME, SCRIPT_ERROR  } from './constants';
 import { initSentry } from './sentry';
 import { fetchScript } from './script';
 
-import type { ILoaderParams } from './types';
+import type { ILoaderParams, SentryHub, AttemptLoadingParams } from './types';
 
 // Prevent loading API script multiple times
 export const hCaptchaScripts = [];
 
 // Generate hCaptcha API script
-export function hCaptchaLoader(params: ILoaderParams = { cleanup: true }): Promise<any> {
-  const sentry = initSentry(params.sentry);
+export function hCaptchaLoaderPromise(params: ILoaderParams = { cleanup: true }, sentry: SentryHub): Promise<any> {
 
   try {
 
@@ -87,4 +86,41 @@ export function hCaptchaLoader(params: ILoaderParams = { cleanup: true }): Promi
     sentry.captureException(error);
     return Promise.reject(new Error(SCRIPT_ERROR));
   }
+}
+
+
+export function hCaptchaLoader(params: ILoaderParams = { cleanup: true }) {
+  const retryCount = 3;
+  const sentry = initSentry(params.sentry);
+
+  function handleError({ resolve, reject, retries, error }: AttemptLoadingParams) {
+    sentry.addBreadcrumb({
+      category: 'hCaptcha:retry',
+      message: 'Retrying hCaptchaLoaderPromise',
+      data: { retries: retries + 1, error: error.message }
+    });
+
+    return attemptLoading({ resolve, reject, retries: retries +1, error });
+  }
+
+  function attemptLoading({ resolve, reject, retries, error = {} }: AttemptLoadingParams) {
+    if (retries >= retryCount) {
+      sentry.addBreadcrumb({
+        category: 'hCaptcha:retry',
+        message: 'Exceeded maximum retries',
+        data: { error: error.message }
+      });
+      sentry.captureException(error);
+      return reject(error);
+    }
+
+    hCaptchaLoaderPromise(params, sentry)
+      .then((result) => resolve(result), (error) =>
+        handleError({ error, resolve, reject, retries }))
+      .catch(error => handleError({ error, resolve, reject, retries }));
+  }
+
+  return new Promise((resolve, reject) => {
+    return attemptLoading({resolve, reject, retries: 0});
+  });
 }
