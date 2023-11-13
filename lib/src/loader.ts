@@ -1,15 +1,15 @@
 import { generateQuery, getFrame, getMountElement } from './utils';
-import { HCAPTCHA_LOAD_FN_NAME, SCRIPT_ERROR  } from './constants';
+import { HCAPTCHA_LOAD_FN_NAME, RETRY_COUNT, SCRIPT_ERROR } from './constants';
 import { initSentry } from './sentry';
 import { fetchScript } from './script';
 
-import type { ILoaderParams, SentryHub, AttemptLoadingParams } from './types';
+import type {ILoaderParams, SentryHub} from './types';
 
 // Prevent loading API script multiple times
 export const hCaptchaScripts = [];
 
 // Generate hCaptcha API script
-export function hCaptchaLoaderPromise(params: ILoaderParams = { cleanup: true }, sentry: SentryHub): Promise<any> {
+export function hCaptchaApi(params: ILoaderParams = { cleanup: true }, sentry: SentryHub): Promise<any> {
 
   try {
 
@@ -88,39 +88,35 @@ export function hCaptchaLoaderPromise(params: ILoaderParams = { cleanup: true },
   }
 }
 
+export function loadScript(params, retries = 0) {
+  const message = retries < RETRY_COUNT ? 'Retry loading hCaptcha Api' : 'Exceeded maximum retries';
+  const category = 'api';
 
-export function hCaptchaLoader(params: ILoaderParams = { cleanup: true }) {
-  const retryCount = 3;
   const sentry = initSentry(params.sentry);
 
-  function handleError({ resolve, reject, retries, error }: AttemptLoadingParams) {
+  try {
+
+    return hCaptchaApi(params, sentry);
+
+  } catch (error) {
+
     sentry.addBreadcrumb({
-      category: 'hCaptcha:retry',
-      message: 'Retrying hCaptchaLoaderPromise',
-      data: { retries: retries + 1, error: error.message }
+      category,
+      message,
+      data: { error: error.message }
     });
 
-    return attemptLoading({ resolve, reject, retries: retries +1, error });
-  }
-
-  function attemptLoading({ resolve, reject, retries, error = {} }: AttemptLoadingParams) {
-    if (retries >= retryCount) {
-      sentry.addBreadcrumb({
-        category: 'hCaptcha:retry',
-        message: 'Exceeded maximum retries',
-        data: { error: error.message }
-      });
+    if (retries >= RETRY_COUNT) {
       sentry.captureException(error);
-      return reject(error);
+      return Promise.reject(error);
+    } else {
+      retries += 1;
+      return loadScript(params, retries);
     }
-
-    hCaptchaLoaderPromise(params, sentry)
-      .then((result) => resolve(result), (error) =>
-        handleError({ error, resolve, reject, retries }))
-      .catch(error => handleError({ error, resolve, reject, retries }));
   }
+}
 
-  return new Promise((resolve, reject) => {
-    return attemptLoading({resolve, reject, retries: 0});
-  });
+
+export function hCaptchaLoader(params) {
+  return loadScript(params);
 }

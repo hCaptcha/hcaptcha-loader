@@ -31,10 +31,3 @@ export interface ScopeTag {
     key: string;
     value: string;
 }
-
-export interface AttemptLoadingParams {
-    resolve: (value?: any) => void;
-    reject: (reason?: any) => void;
-    retries: number,
-    error?: any,
-}
