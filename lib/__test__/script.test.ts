@@ -2,7 +2,7 @@ import { afterEach, afterAll, beforeAll, describe, it, jest, expect } from '@jes
 import { spyOnScriptMethod } from './__mocks__';
 
 import { fetchScript } from "../src/script";
-import { HCAPTCHA_LOAD_FN_NAME, SCRIPT_ID } from "../src/constants";
+import {HCAPTCHA_LOAD_FN_NAME, SCRIPT_ERROR, SCRIPT_ID} from '../src/constants';
 import { generateQuery } from '../src/utils';
 
 
@@ -64,17 +64,17 @@ describe('fetchScript', () => {
 
       it('should reject when onerror is called', async () => {
           spyOnError.set.mockImplementationOnce((callback: (any) => void) => {
-              callback(new Error('Invalid Script'));
+              callback({event: 'test'});
           });
 
-          await expect(fetchScript()).rejects.toThrow('Invalid Script');
+          await expect(fetchScript()).rejects.toThrow(SCRIPT_ERROR);
 
           expect(spyOnAppend).toHaveBeenCalled();
           expect(spyOnRemove).toHaveBeenCalled();
       });
 
       it('should reject when internal error is caught', async () => {
-          const errorInternal = new Error('Invalid Script');
+          const errorInternal = new Error(SCRIPT_ERROR);
 
           spyOnLoad.set.mockImplementationOnce((callback: (any) => void) => {
               callback(new Event('Loaded Script'));
