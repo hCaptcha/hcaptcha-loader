@@ -8,6 +8,8 @@ import type { ILoaderParams } from './types';
 // Prevent loading API script multiple times
 export const hCaptchaScripts = [];
 
+const scriptError = new Error(SCRIPT_ERROR);
+
 // Generate hCaptcha API script
 export function hCaptchaLoader(params: ILoaderParams = { cleanup: true }): Promise<any> {
   const sentry = initSentry(params.sentry);
@@ -74,8 +76,8 @@ export function hCaptchaLoader(params: ILoaderParams = { cleanup: true }): Promi
             category: 'hCaptcha:script',
             message: 'hCaptcha failed to load',
           });
-          sentry.captureException(error);
-          reject(new Error(SCRIPT_ERROR));
+          sentry.captureException(scriptError);
+          reject(scriptError);
         }
       }
     );
@@ -84,7 +86,7 @@ export function hCaptchaLoader(params: ILoaderParams = { cleanup: true }): Promi
 
     return promise;
   } catch (error) {
-    sentry.captureException(error);
-    return Promise.reject(new Error(SCRIPT_ERROR));
+    sentry.captureException(scriptError);
+    return Promise.reject(scriptError);
   }
 }
