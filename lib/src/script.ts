@@ -1,4 +1,4 @@
-import { HCAPTCHA_LOAD_FN_NAME, SCRIPT_ID } from './constants';
+import {HCAPTCHA_LOAD_FN_NAME, SCRIPT_ERROR, SCRIPT_ID} from './constants';
 import { getFrame, getMountElement } from './utils';
 
 import type { IScriptParams } from './types';
@@ -34,7 +34,7 @@ export function fetchScript({
     };
 
     script.onload = (event) => onComplete(event, resolve);
-    script.onerror = (event) => onComplete(event, reject);
+    script.onerror = (event) => onComplete(event, () => reject(new Error(SCRIPT_ERROR)));
 
     script.src += query !== '' ? `&${query}` : '';
 
