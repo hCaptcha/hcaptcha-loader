@@ -1,4 +1,4 @@
-import {HCAPTCHA_LOAD_FN_NAME, SCRIPT_ERROR, SCRIPT_ID} from './constants';
+import { HCAPTCHA_LOAD_FN_NAME, SCRIPT_ERROR, SCRIPT_ID } from './constants';
 import { getFrame, getMountElement } from './utils';
 
 import type { IScriptParams } from './types';
