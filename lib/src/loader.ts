@@ -74,6 +74,7 @@ export function hCaptchaLoader(params: ILoaderParams = { cleanup: true }): Promi
             category: 'hCaptcha:script',
             message: 'hCaptcha failed to load',
           });
+
           sentry.captureException(error);
           reject(new Error(SCRIPT_ERROR));
         }
