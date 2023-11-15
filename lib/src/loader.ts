@@ -73,6 +73,7 @@ export function hCaptchaApi(params: ILoaderParams = { cleanup: true }, sentry: S
             category: 'hCaptcha:script',
             message: 'hCaptcha failed to load',
           });
+
           sentry.captureException(error);
           reject(new Error(SCRIPT_ERROR));
         }
