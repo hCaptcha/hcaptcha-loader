@@ -2,7 +2,7 @@ import { afterEach, afterAll, beforeAll, describe, it, jest, expect } from '@jes
 import { spyOnScriptMethod } from './__mocks__';
 
 import { fetchScript } from "../src/script";
-import {HCAPTCHA_LOAD_FN_NAME, SCRIPT_ERROR, SCRIPT_ID} from '../src/constants';
+import { HCAPTCHA_LOAD_FN_NAME, SCRIPT_ERROR, SCRIPT_ID } from '../src/constants';
 import { generateQuery } from '../src/utils';
 
 
