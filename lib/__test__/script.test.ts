@@ -63,11 +63,11 @@ describe('fetchScript', () => {
       });
 
       it('should reject when onerror is called', async () => {
-          spyOnError.set.mockImplementationOnce((callback: (any) => void) => {
-              callback({event: 'test'});
+          spyOnError.set.mockImplementationOnce((callback: (any) => any) => {
+            callback('Invalid Script');
           });
 
-          await expect(fetchScript()).rejects.toThrow(SCRIPT_ERROR);
+          await expect(fetchScript()).rejects.toBe('Invalid Script');
 
           expect(spyOnAppend).toHaveBeenCalled();
           expect(spyOnRemove).toHaveBeenCalled();
