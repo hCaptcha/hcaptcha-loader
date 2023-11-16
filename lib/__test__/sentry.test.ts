@@ -6,6 +6,7 @@ import {
   getSentry,
   getSentryHubWrapper,
 } from '../src/sentry';
+import { SCRIPT_ERROR } from '../src/constants.js';
 
 jest.mock('@sentry/browser', () => ({
   BrowserClient: jest.fn(),
@@ -79,8 +80,11 @@ describe('Sentry', () => {
     sentryHubWrapper.captureMessage('test message');
     expect(mockHub.captureMessage).toHaveBeenCalledWith('test message');
 
-    sentryHubWrapper.captureException('test exception');
-    expect(mockHub.captureException).toHaveBeenCalledWith('test exception');
+    sentryHubWrapper.captureException(new Error('test error'));
+    expect(mockHub.captureException).toHaveBeenCalledWith(new Error('test error'));
+
+    sentryHubWrapper.captureException('test non error');
+    expect(mockHub.captureException).toHaveBeenCalledWith(new Error(SCRIPT_ERROR));
   });
 });
 

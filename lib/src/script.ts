@@ -34,7 +34,7 @@ export function fetchScript({
     };
 
     script.onload = (event) => onComplete(event, resolve);
-    script.onerror = (event) => onComplete(event, () => reject(new Error(SCRIPT_ERROR)));
+    script.onerror = (event) => onComplete(event, reject);
 
     script.src += query !== '' ? `&${query}` : '';
 

@@ -73,6 +73,7 @@ export function hCaptchaLoader(params: ILoaderParams = { cleanup: true }): Promi
           sentry.addBreadcrumb({
             category: 'hCaptcha:script',
             message: 'hCaptcha failed to load',
+            data: error,
           });
 
           sentry.captureException(error);

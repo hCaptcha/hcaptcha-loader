@@ -1,6 +1,7 @@
 import * as Sentry from '@sentry/browser';
 
 import { ScopeTag, SentryHub } from './types';
+import { SCRIPT_ERROR } from './constants';
 
 const SENTRY_DSN = process.env.SENTRY_DSN_TOKEN;
 
@@ -71,7 +72,7 @@ export function getSentryHubWrapper(
         sentryHub.captureMessage(message);
       });
     },
-    captureException: (e) => {
+    captureException: (error) => {
       if (!sentryHub) {
         return;
       }
@@ -79,7 +80,9 @@ export function getSentryHubWrapper(
       sentryHub.withScope(function (scope) {
         scope.setTag(tag.key, tag.value);
 
-        sentryHub.captureException(e);
+        sentryHub.captureException(
+          error instanceof Error ? error : new Error(SCRIPT_ERROR)
+        );
       });
     }
   };
