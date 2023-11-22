@@ -72,6 +72,7 @@ export function hCaptchaApi(params: ILoaderParams = { cleanup: true }, sentry: S
           sentry.addBreadcrumb({
             category: 'hCaptcha:script',
             message: 'hCaptcha failed to load',
+            data: error,
           });
 
           sentry.captureException(error);

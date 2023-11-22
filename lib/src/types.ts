@@ -23,7 +23,7 @@ export interface ILoaderParams extends IScriptParams {
 
 export interface SentryHub {
     addBreadcrumb: (breadcrumb: object) => void;
-    captureException: (e: any) => void;
+    captureException: (error: any) => void;
     captureMessage: (message: string) => void;
 }
 
