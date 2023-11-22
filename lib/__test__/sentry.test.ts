@@ -6,6 +6,7 @@ import {
   getSentry,
   getSentryHubWrapper,
 } from '../src/sentry';
+import { SCRIPT_ERROR } from '../src/constants.js';
 
 jest.mock('@sentry/browser', () => ({
   BrowserClient: jest.fn(),
@@ -64,7 +65,7 @@ describe('Sentry', () => {
     const mockHub = {
       addBreadcrumb: jest.fn(),
       captureMessage: jest.fn(),
-      captureException: jest.fn(),
+      captureEvent: jest.fn(),
       withScope: jest.fn(callback => callback(mockScope)),
     };
 
@@ -79,8 +80,19 @@ describe('Sentry', () => {
     sentryHubWrapper.captureMessage('test message');
     expect(mockHub.captureMessage).toHaveBeenCalledWith('test message');
 
-    sentryHubWrapper.captureException('test exception');
-    expect(mockHub.captureException).toHaveBeenCalledWith('test exception');
+    sentryHubWrapper.captureException(new Error('test error'));
+    expect(mockHub.captureEvent).toHaveBeenCalledWith({
+      message: SCRIPT_ERROR,
+      level: 'error',
+      extra: new Error('test error'),
+    });
+
+    sentryHubWrapper.captureException('test non error');
+    expect(mockHub.captureEvent).toHaveBeenCalledWith({
+      message: SCRIPT_ERROR,
+      level: 'error',
+      extra: 'test non error',
+    });
   });
 });
 
