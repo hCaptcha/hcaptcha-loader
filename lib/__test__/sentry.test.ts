@@ -65,7 +65,7 @@ describe('Sentry', () => {
     const mockHub = {
       addBreadcrumb: jest.fn(),
       captureMessage: jest.fn(),
-      captureException: jest.fn(),
+      captureEvent: jest.fn(),
       withScope: jest.fn(callback => callback(mockScope)),
     };
 
@@ -81,10 +81,18 @@ describe('Sentry', () => {
     expect(mockHub.captureMessage).toHaveBeenCalledWith('test message');
 
     sentryHubWrapper.captureException(new Error('test error'));
-    expect(mockHub.captureException).toHaveBeenCalledWith(new Error('test error'));
+    expect(mockHub.captureEvent).toHaveBeenCalledWith({
+      message: SCRIPT_ERROR,
+      level: 'error',
+      extra: new Error('test error'),
+    });
 
     sentryHubWrapper.captureException('test non error');
-    expect(mockHub.captureException).toHaveBeenCalledWith(new Error(SCRIPT_ERROR));
+    expect(mockHub.captureEvent).toHaveBeenCalledWith({
+      message: SCRIPT_ERROR,
+      level: 'error',
+      extra: 'test non error',
+    });
   });
 });
 

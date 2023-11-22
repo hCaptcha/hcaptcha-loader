@@ -79,10 +79,11 @@ export function getSentryHubWrapper(
 
       sentryHub.withScope(function (scope) {
         scope.setTag(tag.key, tag.value);
-
-        sentryHub.captureException(
-          error instanceof Error ? error : new Error(SCRIPT_ERROR)
-        );
+        sentryHub.captureEvent({
+          message: SCRIPT_ERROR,
+          level: 'error',
+          extra: error
+        });
       });
     }
   };
