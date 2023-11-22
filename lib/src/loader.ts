@@ -3,7 +3,7 @@ import { HCAPTCHA_LOAD_FN_NAME, RETRY_COUNT, SCRIPT_ERROR } from './constants';
 import { initSentry } from './sentry';
 import { fetchScript } from './script';
 
-import type {ILoaderParams, SentryHub} from './types';
+import type { ILoaderParams, SentryHub } from './types';
 
 // Prevent loading API script multiple times
 export const hCaptchaScripts = [];
@@ -105,7 +105,7 @@ export function loadScript(params, retries = 0) {
     sentry.addBreadcrumb({
       category,
       message,
-      data: { error: error.message }
+      data: { error }
     });
 
     if (retries >= RETRY_COUNT) {
