@@ -1,5 +1,5 @@
 import { generateQuery, getFrame, getMountElement } from './utils';
-import { HCAPTCHA_LOAD_FN_NAME, RETRY_COUNT, SCRIPT_ERROR } from './constants';
+import { HCAPTCHA_LOAD_FN_NAME, RETRY_COUNT, SCRIPT_ERROR, SENTRY_TAG } from './constants';
 import { initSentry } from './sentry';
 import { fetchScript } from './script';
 
@@ -14,7 +14,7 @@ export function hCaptchaApi(params: ILoaderParams = { cleanup: true }, sentry: S
   try {
 
     sentry.addBreadcrumb({
-      category: 'script',
+      category: SENTRY_TAG,
       message: 'hCaptcha loader params',
       data: params,
     });
@@ -25,7 +25,7 @@ export function hCaptchaApi(params: ILoaderParams = { cleanup: true }, sentry: S
 
     if (script) {
       sentry.addBreadcrumb({
-        category: 'script',
+        category: SENTRY_TAG,
         message: 'hCaptcha already loaded',
       });
 
@@ -41,7 +41,7 @@ export function hCaptchaApi(params: ILoaderParams = { cleanup: true }, sentry: S
           // Create global onload callback for the hCaptcha library to call
           frame.window[HCAPTCHA_LOAD_FN_NAME] = () => {
             sentry.addBreadcrumb({
-              category: 'hCaptcha:script',
+              category: SENTRY_TAG,
               message: 'hCaptcha script called onload function',
             });
 
@@ -65,12 +65,14 @@ export function hCaptchaApi(params: ILoaderParams = { cleanup: true }, sentry: S
           await fetchScript({ query, ...params });
 
           sentry.addBreadcrumb({
-            category: 'hCaptcha:script',
+            category: SENTRY_TAG,
             message: 'hCaptcha loaded',
           });
+
+          hCaptchaScripts.push({ promise, scope: frame.window });
         } catch(error) {
           sentry.addBreadcrumb({
-            category: 'hCaptcha:script',
+            category: SENTRY_TAG,
             message: 'hCaptcha failed to load',
             data: error,
           });
@@ -81,8 +83,6 @@ export function hCaptchaApi(params: ILoaderParams = { cleanup: true }, sentry: S
       }
     );
 
-    hCaptchaScripts.push({ promise, scope: frame.window });
-
     return promise;
   } catch (error) {
     sentry.captureException(error);
@@ -92,30 +92,25 @@ export function hCaptchaApi(params: ILoaderParams = { cleanup: true }, sentry: S
 
 export function loadScript(params, retries = 0) {
   const message = retries < RETRY_COUNT ? 'Retry loading hCaptcha Api' : 'Exceeded maximum retries';
-  const category = 'api';
 
   const sentry = initSentry(params.sentry);
 
-  try {
+  return hCaptchaApi(params, sentry).catch(
+    error => {
+      sentry.addBreadcrumb({
+        SENTRY_SOURCE: SENTRY_TAG,
+        message,
+        data: { error }
+      });
 
-    return hCaptchaApi(params, sentry);
-
-  } catch (error) {
-
-    sentry.addBreadcrumb({
-      category,
-      message,
-      data: { error }
+      if (retries >= RETRY_COUNT) {
+        sentry.captureException(error);
+        return Promise.reject(error);
+      } else {
+        retries += 1;
+        return loadScript(params, retries);
+      }
     });
-
-    if (retries >= RETRY_COUNT) {
-      sentry.captureException(error);
-      return Promise.reject(error);
-    } else {
-      retries += 1;
-      return loadScript(params, retries);
-    }
-  }
 }
 
 
