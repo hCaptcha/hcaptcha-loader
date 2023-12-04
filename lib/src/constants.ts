@@ -5,4 +5,4 @@ export const SCRIPT_COMPLETE = 'script-loaded';
 
 export const SENTRY_TAG = '@hCaptcha/loader';
 
-export const RETRY_COUNT = 2;
+export const MAX_RETRIES = 2;

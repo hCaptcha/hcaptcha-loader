@@ -1,5 +1,5 @@
 import { generateQuery, getFrame, getMountElement } from './utils';
-import { HCAPTCHA_LOAD_FN_NAME, RETRY_COUNT, SCRIPT_ERROR, SENTRY_TAG } from './constants';
+import { HCAPTCHA_LOAD_FN_NAME, MAX_RETRIES, SCRIPT_ERROR, SENTRY_TAG } from './constants';
 import { initSentry } from './sentry';
 import { fetchScript } from './script';
 
@@ -92,7 +92,7 @@ export function hCaptchaApi(params: ILoaderParams = { cleanup: true }, sentry: S
 }
 
 export async function loadScript(params, retries = 0) {
-  const message = retries < RETRY_COUNT ? 'Retry loading hCaptcha Api' : 'Exceeded maximum retries';
+  const message = retries < MAX_RETRIES ? 'Retry loading hCaptcha Api' : 'Exceeded maximum retries';
 
   const sentry = initSentry(params.sentry);
 
@@ -107,7 +107,7 @@ export async function loadScript(params, retries = 0) {
       data: { error }
     });
 
-    if (retries >= RETRY_COUNT) {
+    if (retries >= MAX_RETRIES) {
       sentry.captureException(error);
       return Promise.reject(error);
     } else {
