@@ -70,7 +70,6 @@ export function hCaptchaApi(params: ILoaderParams = { cleanup: true }, sentry: S
             data: script
           });
 
-          hCaptchaScripts.push({ promise, scope: frame.window });
         } catch(error) {
           sentry.addBreadcrumb({
             category: SENTRY_TAG,
@@ -78,12 +77,20 @@ export function hCaptchaApi(params: ILoaderParams = { cleanup: true }, sentry: S
             data: error,
           });
 
+
+          const scriptIndex = hCaptchaScripts.findIndex(script => script.scope === frame.window);
+
+          if (scriptIndex !== -1) {
+            hCaptchaScripts.splice(scriptIndex, 1);
+          }
+
           sentry.captureException(error);
           reject(new Error(SCRIPT_ERROR));
         }
       }
     );
 
+    hCaptchaScripts.push({ promise, scope: frame.window });
     return promise;
   } catch (error) {
     sentry.captureException(error);
