@@ -118,6 +118,6 @@ export async function loadScript(params, retries = 0) {
 }
 
 
-export function hCaptchaLoader(params) {
-  return loadScript(params);
+export async function hCaptchaLoader(params) {
+  return await loadScript(params);
 }
