@@ -8,5 +8,5 @@
 
 
 # Github Action Owners
-.github/actions    @IntuitionMachines/hcaptcha-reviewers
-.github/workflow   @IntuitionMachines/hcaptcha-reviewers
+.github/actions    @hCaptcha/hcaptcha-reviewers
+.github/workflow   @hCaptcha/hcaptcha-reviewers
