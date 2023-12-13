@@ -4,8 +4,9 @@
 *   @hCaptcha/react-reviewers
 
 # Javascript Owners
-*.js    @hCaptcha/react-reviewers
+*.js    @IntuitionMachines/hcaptcha-reviewers
+
 
 # Github Action Owners
-.github/actions    @hCaptcha/react-reviewers
-.github/workflow   @hCaptcha/react-reviewers
+.github/actions    @IntuitionMachines/hcaptcha-reviewers
+.github/workflow   @IntuitionMachines/hcaptcha-reviewers
