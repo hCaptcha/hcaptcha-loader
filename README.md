@@ -54,13 +54,13 @@ To use in ES5 environments, add the following:
 1. **polyfills.js**: This script provides polyfills for features not supported in older browsers.
 
 ```html
-<script type="text/javascript" src="./node_modules/@hcaptcha/loader/dist/polyfills.js"></script>
+<script type="text/javascript" src="https://unpkg.com/@hcaptcha/loader@latest/dist/polyfills.js"></script>
 ```
 
 2. **index.es5.js**: This is the main script file for the `@hcaptcha/loader` package, compiled for ES5 environments.
 
 ```html
-<script type="text/javascript" src="./node_modules/@hcaptcha/loader/dist/index.es5.js"></script>
+<script type="text/javascript" src="https://unpkg.com/@hcaptcha/loader@latest/dist/index.es5.js"></script>
 ```
 
 
@@ -69,8 +69,8 @@ Once you have included the necessary dependencies, you can use the `@hcaptcha/lo
 ```html
 <!DOCTYPE html>
 <head>
-    <script type="text/javascript" src="./node_modules/@hcaptcha/loader/dist/polyfills.js"></script>
-    <script type="text/javascript" src="./node_modules/@hcaptcha/loader/dist/index.es5.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/@hcaptcha/loader@latest/dist/polyfills.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/@hcaptcha/loader@latest/dist/index.es5.js"></script>
 </head>
 <body>
     <div id="h-captcha" data-sitekey="YOUR_SITE_KEY"></div>
@@ -84,7 +84,3 @@ Once you have included the necessary dependencies, you can use the `@hcaptcha/lo
 </body>
 </html>
 ```
-
-#### Important Notes
-
-- Ensure that the paths to the script files (`polyfills.js` and `index.es5.js`) are correct relative to your HTML file.
