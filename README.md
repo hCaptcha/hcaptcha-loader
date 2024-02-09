@@ -76,7 +76,7 @@ Once you have included the necessary dependencies, you can use the `@hcaptcha/lo
     <div id="h-captcha" data-sitekey="YOUR_SITE_KEY"></div>
     <script type="text/javascript">
         var element = document.createElement('div');
-        window.hcaptcha.render(element, {
+        window.hCaptchaLoader.render(element, {
             sitekey: 'YOUR_SITE_KEY',
             // Additional options here
         });
