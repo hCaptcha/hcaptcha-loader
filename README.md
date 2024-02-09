@@ -73,7 +73,6 @@ Once you have included the necessary dependencies, you can use the `@hcaptcha/lo
     <script type="text/javascript" src="https://unpkg.com/@hcaptcha/loader@latest/dist/index.es5.js"></script>
 </head>
 <body>
-    <div id="h-captcha" data-sitekey="YOUR_SITE_KEY"></div>
     <script type="text/javascript">
         var element = document.createElement('div');
         window.hCaptchaLoader.render(element, {
