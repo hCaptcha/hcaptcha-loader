@@ -9,6 +9,7 @@ This is a JavaScript library to easily configure the loading of the [hCaptcha](h
 1. [Installation](#installation)
 2. [Implementation](#implementation)
 3. [Props](#props)
+3. [Legacy Support](#legacy-support)
 
 ### Installation
 ```
@@ -47,24 +48,37 @@ const { response } = await hcaptcha.execute({ async: true });
 | `sentry`          | Boolean     | No       | `-`             | See enterprise docs.                                                                                                                                      |
 | `custom`          | Boolean     | No       | `-`             | See enterprise docs.                                                                                                                                      |
 
-### ES5 Support
 
-To use in ES5 environments, add the following:
 
-1. **polyfills.js**: This script provides polyfills for features not supported in older browsers.
+## Legacy Support
+In order to support older browsers, a seperate bundle is generated in which all ES6 code is compiled down to ES5 along with an optional polyfill bundle to extend functionality that is used common to modern browsers.
 
-```html
-<script type="text/javascript" src="https://unpkg.com/@hcaptcha/loader@latest/dist/polyfills.js"></script>
+- `polyfills.js`: Provides polyfills for features not supported in older browsers.
+- `index.es5.js`: **@hcaptcha/loader** package compiled for ES5 environments.
+
+### Import Bundle(s)
+Both bundles generated utilize IIFE format instead of modern importation syntax such as `require` or `esm`.
+
+```js
+// Optional polyfill import
+import '@hCaptcha/loader/dist/polyfills.js';
+// ES5 version of hCaptcha Loader
+import '@hCaptcha/loader/dist/index.es5.js';
+
+hCaptchaLoader.then(function() {
+    var element = document.createElement('div');
+    // hCaptcha API is ready
+    hcaptcha.render(element, {
+        sitekey: 'YOUR_SITE_KEY',
+        // Additional options here
+    });
+});
+
 ```
 
-2. **index.es5.js**: This is the main script file for the `@hcaptcha/loader` package, compiled for ES5 environments.
+### CDN
+The hCaptcha Loader targetted for older browsers can also be imported via a CDN by leveraging UNPKG](https://www.unpkg.com/), see example below.
 
-```html
-<script type="text/javascript" src="https://unpkg.com/@hcaptcha/loader@latest/dist/index.es5.js"></script>
-```
-
-
-Once you have included the necessary dependencies, you can use the `@hcaptcha/loader` package in your JavaScript code.
 
 ```html
 <!DOCTYPE html>
@@ -74,10 +88,13 @@ Once you have included the necessary dependencies, you can use the `@hcaptcha/lo
 </head>
 <body>
     <script type="text/javascript">
-        var element = document.createElement('div');
-        window.hCaptchaLoader.render(element, {
-            sitekey: 'YOUR_SITE_KEY',
-            // Additional options here
+        hCaptchaLoader.then(function() {
+            var element = document.createElement('div');
+            // hCaptcha API is ready
+            hcaptcha.render(element, {
+                sitekey: 'YOUR_SITE_KEY',
+                // Additional options here
+            });
         });
     </script>
 </body>
