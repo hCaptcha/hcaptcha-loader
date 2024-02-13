@@ -11,7 +11,7 @@ export function fetchScript({
   apihost = 'https://js.hcaptcha.com',
   cleanup = true,
   secureApi = false,
-  scriptSource = ""
+  scriptSource = ''
 }: IScriptParams = {}) {
   const element = getMountElement(scriptLocation);
   const frame: any = getFrame(element);
