@@ -51,13 +51,13 @@ const { response } = await hcaptcha.execute({ async: true });
 
 
 ## Legacy Support
-In order to support older browsers, a seperate bundle is generated in which all ES6 code is compiled down to ES5 along with an optional polyfill bundle to extend functionality that is used common to modern browsers.
+In order to support older browsers, a separate bundle is generated in which all ES6 code is compiled down to ES5 along with an optional polyfill bundle.
 
 - `polyfills.js`: Provides polyfills for features not supported in older browsers.
 - `index.es5.js`: **@hcaptcha/loader** package compiled for ES5 environments.
 
 ### Import Bundle(s)
-Both bundles generated utilize IIFE format instead of modern importation syntax such as `require` or `esm`.
+Both bundles generated use IIFE format rather than a more modern import syntax such as `require` or `esm`.
 
 ```js
 // Optional polyfill import
@@ -77,7 +77,7 @@ hCaptchaLoader.then(function() {
 ```
 
 ### CDN
-The hCaptcha Loader targetted for older browsers can also be imported via a CDN by leveraging UNPKG](https://www.unpkg.com/), see example below.
+The hCaptcha Loader targeted for older browsers can also be imported via CDN by using UNPKG](https://www.unpkg.com/), see example below.
 
 
 ```html
