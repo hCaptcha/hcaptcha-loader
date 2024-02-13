@@ -87,11 +87,11 @@ The hCaptcha Loader targetted for older browsers can also be imported via a CDN 
     <script type="text/javascript" src="https://unpkg.com/@hcaptcha/loader@latest/dist/index.es5.js"></script>
 </head>
 <body>
+    <div id="container"></div>
     <script type="text/javascript">
-        hCaptchaLoader.then(function() {
-            var element = document.createElement('div');
+        hCaptchaLoader().then(function(hcaptcha) {
             // hCaptcha API is ready
-            hcaptcha.render(element, {
+            hcaptcha.render('container', {
                 sitekey: 'YOUR_SITE_KEY',
                 // Additional options here
             });
