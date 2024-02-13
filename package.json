@@ -1,7 +1,7 @@
 {
   "name": "@hcaptcha/loader",
   "description": "This is a JavaScript library to easily configure the loading of the hCaptcha JS client SDK with built-in error handling.",
-  "version": "1.1.3",
+  "version": "1.2.0",
   "author": "hCaptcha team and contributors",
   "license": "MIT",
   "keywords": [
