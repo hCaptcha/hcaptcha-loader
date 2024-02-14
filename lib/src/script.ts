@@ -34,7 +34,7 @@ export function fetchScript({
 
     const onComplete = (event, callback) => {
       try {
-        if (cleanup) {
+        if (!secureApi && cleanup) {
           element.removeChild(script);
         }
         callback(event);
