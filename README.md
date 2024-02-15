@@ -67,7 +67,7 @@ import '@hCaptcha/loader/dist/polyfills.js';
 // ES5 version of hCaptcha Loader
 import '@hCaptcha/loader/dist/index.es5.js';
 
-hCaptchaLoader().then(function(hcaptcha) {
+window['hCaptchaLoader']().then(function(hcaptcha) {
     var element = document.createElement('div');
     // hCaptcha API is ready
     hcaptcha.render(element, {
@@ -76,19 +76,6 @@ hCaptchaLoader().then(function(hcaptcha) {
     });
 });
 
-```
-### TypeScript
-To ensure compatibility with TypeScript environments, use indexer access:
-```ts
-
-window['hCaptchaLoader']().then(function(hcaptcha) {
-  var element = document.createElement('div');
-  // hCaptcha API is ready
-  hcaptcha.render(element, {
-    sitekey: 'YOUR_SITE_KEY',
-    // Additional options here
-  });
-});
 ```
 
 ### CDN
