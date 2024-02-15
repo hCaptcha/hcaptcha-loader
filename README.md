@@ -31,24 +31,24 @@ const { response } = await hcaptcha.execute({ async: true });
 ```
 
 ### Props
-| Name              | Values/Type | Required | Default         | Description                                                                                                                                               |
-|-------------------|-------------|----------|-----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `loadAsync`       | Boolean     | No       | `true`          | Set if the script should be loaded asynchronously.                                                                                                        |
-| `cleanup`         | Boolean     | No       | `true`          | Remove script tag after setup.                                                                                                                            |
-| `crossOrigin`     | String      | No       | `-`             | Set script cross origin attribute such as "anonymous".                                                                                                    |
-| `scriptSource`     | String      | No       | `https://js.hcaptcha.com/1/api.js`             | Set script source URI. Takes precedence over `secureApi`.                                                                                                   |
-| `scriptLocation`  | HTMLElement | No       | `document.head` | Location of where to append the script tag. Make sure to add it to an area that will persist to prevent loading multiple times in the same document view. |
-| `secureApi`         | Boolean     | No       | `false`          | See enterprise docs.                                                                                                                            |
-| `apihost`         | String      | No       | `-`             | See enterprise docs.                                                                                                                                      |
-| `assethost`       | String      | No       | `-`             | See enterprise docs.                                                                                                                                      |
-| `endpoint`        | String      | No       | `-`             | See enterprise docs.                                                                                                                                      |
-| `hl`              | String      | No       | `-`             | See enterprise docs.                                                                                                                                      |
-| `host`            | String      | No       | `-`             | See enterprise docs.                                                                                                                                      |
-| `imghost`         | String      | No       | `-`             | See enterprise docs.                                                                                                                                      |
-| `recaptchacompat` | String      | No       | `-`             | See enterprise docs.                                                                                                                                      |
-| `reportapi`       | String      | No       | `-`             | See enterprise docs.                                                                                                                                      |
-| `sentry`          | Boolean     | No       | `-`             | See enterprise docs.                                                                                                                                      |
-| `custom`          | Boolean     | No       | `-`             | See enterprise docs.                                                                                                                                      |
+| Name              | Values/Type | Required | Default                            | Description                                                                                                                                               |
+|-------------------|-------------|----------|------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `loadAsync`       | Boolean     | No       | `true`                             | Set if the script should be loaded asynchronously.                                                                                                        |
+| `cleanup`         | Boolean     | No       | `true`                             | Remove script tag after setup.                                                                                                                            |
+| `crossOrigin`     | String      | No       | `-`                                | Set script cross origin attribute such as "anonymous".                                                                                                    |
+| `scriptSource`    | String      | No       | `https://js.hcaptcha.com/1/api.js` | Set script source URI. Takes precedence over `secureApi`.                                                                                                 |
+| `scriptLocation`  | HTMLElement | No       | `document.head`                    | Location of where to append the script tag. Make sure to add it to an area that will persist to prevent loading multiple times in the same document view. |
+| `secureApi`       | Boolean     | No       | `false`                            | See enterprise docs.                                                                                                                                      |
+| `apihost`         | String      | No       | `-`                                | See enterprise docs.                                                                                                                                      |
+| `assethost`       | String      | No       | `-`                                | See enterprise docs.                                                                                                                                      |
+| `endpoint`        | String      | No       | `-`                                | See enterprise docs.                                                                                                                                      |
+| `hl`              | String      | No       | `-`                                | See enterprise docs.                                                                                                                                      |
+| `host`            | String      | No       | `-`                                | See enterprise docs.                                                                                                                                      |
+| `imghost`         | String      | No       | `-`                                | See enterprise docs.                                                                                                                                      |
+| `recaptchacompat` | String      | No       | `-`                                | See enterprise docs.                                                                                                                                      |
+| `reportapi`       | String      | No       | `-`                                | See enterprise docs.                                                                                                                                      |
+| `sentry`          | Boolean     | No       | `-`                                | See enterprise docs.                                                                                                                                      |
+| `custom`          | Boolean     | No       | `-`                                | See enterprise docs.                                                                                                                                      |
 
 
 
@@ -67,7 +67,7 @@ import '@hCaptcha/loader/dist/polyfills.js';
 // ES5 version of hCaptcha Loader
 import '@hCaptcha/loader/dist/index.es5.js';
 
-hCaptchaLoader.then(function() {
+hCaptchaLoader().then(function(hcaptcha) {
     var element = document.createElement('div');
     // hCaptcha API is ready
     hcaptcha.render(element, {
@@ -76,6 +76,24 @@ hCaptchaLoader.then(function() {
     });
 });
 
+```
+### TypeScript
+To ensure compatibility with TypeScript environments, it is necessary to either override the type (`(window as any).hCaptchaLoader()`) or declare an interface:
+```ts
+declare global {
+  interface Window {
+    hCaptchaLoader: any;
+  }
+}
+
+window.hCaptchaLoader().then(function(hcaptcha) {
+  var element = document.createElement('div');
+  // hCaptcha API is ready
+  hcaptcha.render(element, {
+    sitekey: 'YOUR_SITE_KEY',
+    // Additional options here
+  });
+});
 ```
 
 ### CDN
@@ -89,16 +107,16 @@ The hCaptcha Loader targeted for older browsers can also be imported via CDN by 
     <script type="text/javascript" src="https://unpkg.com/@hcaptcha/loader@latest/dist/index.es5.js"></script>
 </head>
 <body>
-    <div id="container"></div>
-    <script type="text/javascript">
-        hCaptchaLoader().then(function(hcaptcha) {
-            // hCaptcha API is ready
-            hcaptcha.render('container', {
-                sitekey: 'YOUR_SITE_KEY',
-                // Additional options here
-            });
+<div id="container"></div>
+<script type="text/javascript">
+    hCaptchaLoader().then(function(hcaptcha) {
+        // hCaptcha API is ready
+        hcaptcha.render('container', {
+            sitekey: 'YOUR_SITE_KEY',
+            // Additional options here
         });
-    </script>
+    });
+</script>
 </body>
 </html>
 ```

@@ -101,7 +101,7 @@ export function hCaptchaApi(params: ILoaderParams = { cleanup: true }, sentry: S
 export async function loadScript(params, retries = 0) {
   const message = retries < MAX_RETRIES ? 'Retry loading hCaptcha Api' : 'Exceeded maximum retries';
 
-  const sentry = initSentry(params && params.sentry);
+  const sentry = initSentry(params.sentry);
 
   try {
 
@@ -125,6 +125,6 @@ export async function loadScript(params, retries = 0) {
 }
 
 
-export async function hCaptchaLoader(params) {
+export async function hCaptchaLoader(params = {}) {
   return await loadScript(params);
 }
