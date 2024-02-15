@@ -88,7 +88,7 @@ declare global {
 ```
 
 ### CDN
-The hCaptcha Loader targeted for older browsers can also be imported via CDN by using UNPKG](https://www.unpkg.com/), see example below.
+The hCaptcha Loader targeted for older browsers can also be imported via CDN by using [UNPKG](https://www.unpkg.com/), see example below.
 
 
 ```html
