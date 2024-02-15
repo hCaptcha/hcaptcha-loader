@@ -78,15 +78,10 @@ hCaptchaLoader().then(function(hcaptcha) {
 
 ```
 ### TypeScript
-To ensure compatibility with TypeScript environments, it is necessary to either override the type (`(window as any).hCaptchaLoader()`) or declare an interface:
+To ensure compatibility with TypeScript environments, use indexer access:
 ```ts
-declare global {
-  interface Window {
-    hCaptchaLoader: any;
-  }
-}
 
-window.hCaptchaLoader().then(function(hcaptcha) {
+window['hCaptchaLoader']().then(function(hcaptcha) {
   var element = document.createElement('div');
   // hCaptcha API is ready
   hcaptcha.render(element, {
