@@ -1,5 +1,7 @@
 export interface IScriptParams {
     scriptLocation?: HTMLElement;
+    secureApi?: boolean;
+    scriptSource?: string;
     apihost?: string;
     loadAsync?: boolean;
     cleanup?: boolean;

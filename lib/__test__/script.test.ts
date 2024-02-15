@@ -143,6 +143,22 @@ describe('fetchScript', () => {
         const [script] = nodes;
         expect(script.src).toMatch(`${apihost}/1/api.js?onload=${HCAPTCHA_LOAD_FN_NAME}`);
       });
+
+      it('should change hCaptcha JS API if secureApi is specified', async () => {
+        const secureApi = true;
+        await fetchScript({ secureApi });
+
+        const [script] = nodes;
+        expect(script.src).toMatch(`https://js.hcaptcha.com/1/secure-api.js?onload=${HCAPTCHA_LOAD_FN_NAME}`);
+      });
+
+      it('should change hCaptcha JS API if scriptSource is specified', async () => {
+        const scriptSource = 'hcaptcha.com/1/api.js';
+        await fetchScript({ scriptSource });
+
+        const [script] = nodes;
+        expect(script.src).toMatch(`${scriptSource}?onload=${HCAPTCHA_LOAD_FN_NAME}`);
+      });
     });
 
     describe('cleanup', () => {
