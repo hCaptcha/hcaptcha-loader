@@ -67,7 +67,7 @@ import '@hCaptcha/loader/dist/polyfills.js';
 // ES5 version of hCaptcha Loader
 import '@hCaptcha/loader/dist/index.es5.js';
 
-window['hCaptchaLoader']().then(function(hcaptcha) {
+hCaptchaLoader().then(function(hcaptcha) {
     var element = document.createElement('div');
     // hCaptcha API is ready
     hcaptcha.render(element, {
@@ -76,6 +76,15 @@ window['hCaptchaLoader']().then(function(hcaptcha) {
     });
 });
 
+```
+### TypeScript
+To handle typescript with ES5 version, use the following statement.
+```ts
+declare global {
+  interface Window {
+    hCaptchaLoader: any;
+  }
+}
 ```
 
 ### CDN
