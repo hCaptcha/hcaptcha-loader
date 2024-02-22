@@ -24,7 +24,7 @@ export function initSentry(
 
   const client = new Sentry.BrowserClient({
     dsn: SENTRY_DSN,
-    transport: Sentry.makeFetchTransport,
+    transport: window.fetch ? Sentry.makeFetchTransport : Sentry.makeXHRTransport,
     stackParser: Sentry.defaultStackParser,
     integrations: [
       new Sentry.Breadcrumbs(),
