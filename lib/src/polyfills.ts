@@ -6,3 +6,4 @@ import 'core-js/es/object/get-own-property-descriptors';
 import 'core-js/es/map';
 import 'core-js/es/set';
 import 'core-js/es/symbol';
+import 'core-js/es/weak-map';
