@@ -9,14 +9,17 @@ This is a JavaScript library to easily configure the loading of the [hCaptcha](h
 1. [Installation](#installation)
 2. [Implementation](#implementation)
 3. [Props](#props)
-3. [Legacy Support](#legacy-support)
+4. [Legacy Support](#legacy-support)
+5. [CSP](#CSP)
 
-### Installation
+## Installation
 ```
 npm install @hcaptcha/loader
 ```
 
-### Implementation
+Or use UNPKG to load via CDN, [as described below](#CDN).
+
+## Implementation
 
 ```js
 import { hCaptchaLoader } from '@hcaptcha/loader';
@@ -30,7 +33,7 @@ hcaptcha.render({
 const { response } = await hcaptcha.execute({ async: true });
 ```
 
-### Props
+## Props
 | Name              | Values/Type | Required | Default                            | Description                                                                                                                                               |
 |-------------------|-------------|----------|------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `loadAsync`       | Boolean     | No       | `true`                             | Set if the script should be loaded asynchronously.                                                                                                        |
@@ -111,3 +114,7 @@ The hCaptcha Loader targeted for older browsers can also be imported via CDN by 
 </body>
 </html>
 ```
+
+## CSP
+
+Note that you should use the `strict-dynamic` policy for this loader, as it needs to load the SDK via `appendChild()`.
