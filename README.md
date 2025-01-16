@@ -118,3 +118,11 @@ The hCaptcha Loader targeted for older browsers can also be imported via CDN by 
 ## CSP
 
 Note that you should use the `strict-dynamic` policy for this loader, as it needs to load the SDK via `appendChild()`.
+
+## Sentry
+
+If the `sentry` flag is enabled, this loader expects to have access to the Sentry SDK, version 8.x or later.
+
+If you have an older `@sentry/browser` client version on your site for your own use, it may take precedence over the bundled version. In this case you may see a console error like "g.setPropagationContext is not a function" due to the loader trying to call methods only available on newer Sentry clients.
+
+To resolve this, update the version of the Sentry client you are including on your site to 8.x or higher.
