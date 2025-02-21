@@ -7,7 +7,7 @@ const SENTRY_DSN = process.env.SENTRY_DSN_TOKEN;
 const VERSION = process.env.VERSION;
 const BUILD = process.env.BUILD;
 
-export function initSentry(sentry: boolean) {
+export function initSentry(sentry: boolean = true) {
   if (!sentry) {
     return getSentry();
   }
