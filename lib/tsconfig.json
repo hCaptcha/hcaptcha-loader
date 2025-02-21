@@ -6,7 +6,7 @@
     "module": "esnext",
     "moduleResolution": "node",
     "isolatedModules": true,
-    "noEmit": true
+    "noEmit": true,
   },
   "types": [
     "node",
@@ -15,7 +15,7 @@
   ],
 
   "include": [
-    "./src/**/*"
+    "./src/**/*",
   ],
 
   "ts-node": {

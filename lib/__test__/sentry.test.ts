@@ -1,30 +1,20 @@
 import { describe, it, jest, expect, afterEach } from '@jest/globals';
+import { Sentry } from '@hcaptcha/sentry';
 
-import * as Sentry from '@sentry/browser';
-import {
-  initSentry,
-  getSentry,
-  getSentryHubWrapper,
-} from '../src/sentry';
-import { SCRIPT_ERROR } from '../src/constants.js';
+import { initSentry } from '../src/sentry';
 
-jest.mock('@sentry/browser', () => ({
-  BrowserClient: jest.fn(),
-  Hub: jest.fn(),
-  Breadcrumbs: jest.fn(),
-  GlobalHandlers: jest.fn(),
-  LinkedErrors: jest.fn(),
-  Dedupe: jest.fn(),
-  HttpContext: jest.fn(),
-  BrowserTracing: jest.fn(),
-  makeFetchTransport: jest.fn(),
-  defaultStackParser: jest.fn(),
-  withScope: jest.fn(),
+jest.mock('@hcaptcha/sentry', () => ({
+  Sentry: {
+    init: jest.fn(),
+    captureException: jest.fn(),
+    scope: {
+      addBreadcrumb: jest.fn(),
+      setTag: jest.fn(),
+      setContext: jest.fn(),
+      setRequest: jest.fn(),
+    },
+  },
 }));
-
-const mockScope = {
-  setTag: jest.fn(),
-};
 
 describe('Sentry', () => {
 
@@ -33,66 +23,41 @@ describe('Sentry', () => {
   });
 
   it('should initialize Sentry Hub and return wrapper', () => {
-    const hub = initSentry(true);
-    expect(Sentry.BrowserClient).toHaveBeenCalledTimes(1);
-    expect(Sentry.Hub).toHaveBeenCalledTimes(1);
-    expect(hub).toBeTruthy();
+    const wrapper = initSentry(true);
+
+    expect(Sentry.init).toHaveBeenCalledTimes(1);
+    expect(Sentry.scope.setTag).toHaveBeenCalledTimes(2);
+    expect(Sentry.scope.setContext).toHaveBeenCalledTimes(3);
+
+    expect(wrapper).toBeTruthy();
   });
 
+  it('should initialize sentry and call api', () => {
+    const wrapper = initSentry(true);
+
+    wrapper.addBreadcrumb({ category: 'test' });
+    wrapper.captureRequest({ method: 'GET', url: 'test' });
+    wrapper.captureException('test error');
+
+    expect(Sentry.init).toHaveBeenCalledTimes(1);
+    expect(Sentry.scope.addBreadcrumb).toHaveBeenCalledTimes(1);
+    expect(Sentry.scope.setRequest).toHaveBeenCalledTimes(1);
+    expect(Sentry.captureException).toHaveBeenCalledTimes(1);
+
+    expect(wrapper).toBeTruthy();
+  });
+
+
   it('should not throw when Sentry is false', () => {
-    const sentryHubWrapper = getSentryHubWrapper(false);
+    const wrapper = initSentry(false);
 
     const testWrapperCall = () => {
-      sentryHubWrapper.addBreadcrumb({ category: 'test' });
-      sentryHubWrapper.captureMessage('test message');
-      sentryHubWrapper.captureException('test error');
+      wrapper.addBreadcrumb({ category: 'test' });
+      wrapper.captureException('test error');
     };
 
     expect(testWrapperCall).not.toThrow();
   });
 
-  it('should get initialized Sentry Hub', () => {
-    const hub = initSentry(true);
-    const hubValues = String(Object.values(hub));
-
-    const retrievedHub = getSentry();
-    const retrievedValues = String(Object.values(retrievedHub));
-
-    expect(hubValues).toEqual(retrievedValues);
-  });
-
-  it('should wrap Sentry Hub correctly', () => {
-    const mockHub = {
-      addBreadcrumb: jest.fn(),
-      captureMessage: jest.fn(),
-      captureEvent: jest.fn(),
-      withScope: jest.fn(callback => callback(mockScope)),
-    };
-
-    const tag = { key: 'testKey', value: 'testValue' };
-    const breadcrumb = { category: 'test' };
-
-    const sentryHubWrapper = getSentryHubWrapper(mockHub, tag);
-
-    sentryHubWrapper.addBreadcrumb(breadcrumb);
-    expect(mockHub.addBreadcrumb).toHaveBeenCalledWith(breadcrumb);
-
-    sentryHubWrapper.captureMessage('test message');
-    expect(mockHub.captureMessage).toHaveBeenCalledWith('test message');
-
-    sentryHubWrapper.captureException(new Error('test error'));
-    expect(mockHub.captureEvent).toHaveBeenCalledWith({
-      message: SCRIPT_ERROR,
-      level: 'error',
-      extra: new Error('test error'),
-    });
-
-    sentryHubWrapper.captureException('test non error');
-    expect(mockHub.captureEvent).toHaveBeenCalledWith({
-      message: SCRIPT_ERROR,
-      level: 'error',
-      extra: 'test non error',
-    });
-  });
 });
 

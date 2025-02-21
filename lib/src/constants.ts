@@ -6,3 +6,18 @@ export const SCRIPT_COMPLETE = 'script-loaded';
 export const SENTRY_TAG = '@hCaptcha/loader';
 
 export const MAX_RETRIES = 2;
+
+export enum SentryContext {
+  ANDROID = 'Android',
+  IOS = 'iOS',
+  LINUX = 'Linux',
+  MAC = 'Mac',
+  WINDOWS = 'Windows',
+  CHROME = 'Chrome',
+  FIREFOX = 'Firefox',
+  UNKNOWN = 'Unknown',
+  SAFARI = 'Safari',
+  OPERA = 'Opera',
+  IE = 'Internet Explorer',
+  EDGE = 'Microsoft Edge',
+}

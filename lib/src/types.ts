@@ -26,10 +26,27 @@ export interface ILoaderParams extends IScriptParams {
 export interface SentryHub {
     addBreadcrumb: (breadcrumb: object) => void;
     captureException: (error: any) => void;
-    captureMessage: (message: string) => void;
+    captureRequest: (context: RequestContext) => void;
 }
 
 export interface ScopeTag {
     key: string;
     value: string;
+}
+
+export interface BrowserContext {
+    name: string;
+    version: string;
+}
+
+export interface DeviceContext {
+    device: string;
+    model: string;
+    family: string;
+}
+
+export interface RequestContext {
+    method: string;
+    url: string;
+    headers?: string[];
 }

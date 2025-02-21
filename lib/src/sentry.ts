@@ -1,90 +1,48 @@
-import * as Sentry from '@sentry/browser';
+import { Scope, Sentry } from '@hcaptcha/sentry';
 
-import { ScopeTag, SentryHub } from './types';
-import { SCRIPT_ERROR } from './constants';
+import { RequestContext, SentryHub } from './types';
+import { setContext } from './utils';
 
 const SENTRY_DSN = process.env.SENTRY_DSN_TOKEN;
+const VERSION = process.env.VERSION;
+const BUILD = process.env.BUILD;
 
-let hub = null;
-
-export function initSentry(
-  sentry: boolean,
-  scopeTag?: ScopeTag
-): SentryHub | null {
-
-  // Sentry disabled in params
-  if (sentry === false) {
-    return getSentryHubWrapper(sentry);
+export function initSentry(sentry: boolean) {
+  if (!sentry) {
+    return getSentry();
   }
-
-  // Client was already created
-  if (hub) {
-    return getSentryHubWrapper(hub, scopeTag);
-  }
-
-  const client = new Sentry.BrowserClient({
+  Sentry.init({
     dsn: SENTRY_DSN,
-    transport: window.fetch ? Sentry.makeFetchTransport : Sentry.makeXHRTransport,
-    stackParser: Sentry.defaultStackParser,
-    integrations: [
-      new Sentry.Breadcrumbs(),
-      new Sentry.GlobalHandlers(),
-      new Sentry.LinkedErrors(),
-      new Sentry.Dedupe(),
-      new Sentry.HttpContext(),
-      new Sentry.BrowserTracing(),
-    ],
+    release: VERSION,
+    environment: BUILD
   });
 
-  hub = new Sentry.Hub(client);
+  const scope = Sentry.scope;
+  setContext(scope);
 
-  return getSentryHubWrapper(hub, scopeTag);
+  return getSentry(scope);
 }
 
-export function getSentry(tag?: ScopeTag): SentryHub | null {
-  return getSentryHubWrapper(hub, tag);
-}
-
-export function getSentryHubWrapper(
-  sentryHub,
-  tag: ScopeTag = {
-    key: 'source',
-    value: '@hCaptcha/loader'
-  }): SentryHub {
+function getSentry(scope: Scope | null = null): SentryHub {
 
   return {
-
     addBreadcrumb: (breadcrumb) => {
-      if (!sentryHub) {
+      if (!scope) {
         return;
       }
-
-      sentryHub.addBreadcrumb(breadcrumb);
+      scope.addBreadcrumb(breadcrumb);
     },
-    captureMessage: (message) => {
-      if (!sentryHub) {
+    captureRequest: (request: RequestContext) => {
+      if (!scope) {
         return;
       }
-
-      sentryHub.withScope(function (scope) {
-        scope.setTag(tag.key, tag.value);
-
-        sentryHub.captureMessage(message);
-      });
+      scope.setRequest(request);
     },
-    captureException: (error) => {
-      if (!sentryHub) {
+    captureException: (error: string | any | Error) => {
+      if (!scope) {
         return;
       }
-
-      sentryHub.withScope(function (scope) {
-        scope.setTag(tag.key, tag.value);
-        sentryHub.captureEvent({
-          message: SCRIPT_ERROR,
-          level: 'error',
-          extra: error
-        });
-      });
+      Sentry.captureException(error, scope);
     }
   };
 }
