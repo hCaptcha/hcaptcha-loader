@@ -118,3 +118,12 @@ The hCaptcha Loader targeted for older browsers can also be imported via CDN by 
 ## CSP
 
 Note that you should use the `strict-dynamic` policy for this loader, as it needs to load the SDK via `appendChild()`.
+
+## Sentry
+
+You can disable Sentry error tracking by setting the `sentry` flag to false,
+which will prevent Sentry error capturing and reporting.
+
+```js
+hCaptchaLoader({ sentry: false });
+```
