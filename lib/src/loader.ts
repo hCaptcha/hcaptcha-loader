@@ -62,7 +62,14 @@ export function hCaptchaApi(params: ILoaderParams = { cleanup: true }, sentry: S
             hl: params.hl,
           });
 
-          await fetchScript({ query, ...params });
+          await fetchScript(
+            { query, ...params },
+            (src) => {
+              sentry.captureRequest({
+                url: src,
+                method: 'GET',
+              });
+            });
 
           sentry.addBreadcrumb({
             category: SENTRY_TAG,
@@ -74,7 +81,6 @@ export function hCaptchaApi(params: ILoaderParams = { cleanup: true }, sentry: S
           sentry.addBreadcrumb({
             category: SENTRY_TAG,
             message: 'hCaptcha failed to load',
-            data: error,
           });
 
 
@@ -84,7 +90,6 @@ export function hCaptchaApi(params: ILoaderParams = { cleanup: true }, sentry: S
             hCaptchaScripts.splice(scriptIndex, 1);
           }
 
-          sentry.captureException(error);
           reject(new Error(SCRIPT_ERROR));
         }
       }
@@ -98,20 +103,16 @@ export function hCaptchaApi(params: ILoaderParams = { cleanup: true }, sentry: S
   }
 }
 
-export async function loadScript(params, retries = 0) {
+export async function loadScript(params, sentry, retries = 0) {
   const message = retries < MAX_RETRIES ? 'Retry loading hCaptcha Api' : 'Exceeded maximum retries';
 
-  const sentry = initSentry(params.sentry);
-
   try {
-
     return await hCaptchaApi(params, sentry);
   } catch (error) {
 
     sentry.addBreadcrumb({
-      SENTRY_SOURCE: SENTRY_TAG,
+      category: SENTRY_TAG,
       message,
-      data: { error }
     });
 
     if (retries >= MAX_RETRIES) {
@@ -119,12 +120,14 @@ export async function loadScript(params, retries = 0) {
       return Promise.reject(error);
     } else {
       retries += 1;
-      return loadScript(params, retries);
+      return loadScript(params, sentry, retries);
     }
   }
 }
 
 
-export async function hCaptchaLoader(params = {}) {
-  return await loadScript(params);
+export async function hCaptchaLoader(params: ILoaderParams = {}) {
+  const sentry = initSentry(params.sentry);
+
+  return await loadScript(params, sentry);
 }

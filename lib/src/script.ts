@@ -12,7 +12,9 @@ export function fetchScript({
   cleanup = true,
   secureApi = false,
   scriptSource = ''
-}: IScriptParams = {}) {
+}: IScriptParams = {},
+onError?: (message) => void
+) {
   const element = getMountElement(scriptLocation);
   const frame: any = getFrame(element);
 
@@ -44,7 +46,12 @@ export function fetchScript({
     };
 
     script.onload = (event) => onComplete(event, resolve);
-    script.onerror = (event) => onComplete(event, reject);
+    script.onerror = (event) => {
+      if (onError) {
+        onError(script.src);
+      }
+      onComplete(event, reject);
+    };
 
     script.src += query !== '' ? `&${query}` : '';
 
