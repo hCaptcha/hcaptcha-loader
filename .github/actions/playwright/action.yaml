@@ -13,7 +13,7 @@ runs:
 
     - name: Cache playwright browsers per version
       id: cache-playwright-browsers
-      uses: actions/cache@v3
+      uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
       with:
         path: ~/.cache/ms-playwright
         key: playwright-browsers-${{ env.PLAYWRIGHT_VERSION }}
