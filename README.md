@@ -1,6 +1,6 @@
 # hCaptcha Loader
 
-This is a JavaScript library to easily configure the loading of the [hCaptcha](https://www.hcaptcha.com) JS client SDK with built-in error handling. It also includes a retry mechanism that will attempt to load the hCaptcha script several times in the event if fails to load due to a network or unforeseen issue.
+This is a JavaScript library to easily configure the loading of the [hCaptcha](https://www.hcaptcha.com) JS client SDK with built-in error handling. It also includes a retry mechanism that will attempt to load the hCaptcha script several times in the event it fails to load due to a network or unforeseen issue.
 
 > [hCaptcha](https://www.hcaptcha.com) is a drop-replacement for reCAPTCHA that protects user privacy.
 >
@@ -121,8 +121,7 @@ Note that you should use the `strict-dynamic` policy for this loader, as it need
 
 ## Sentry
 
-You can disable Sentry error tracking by setting the `sentry` flag to false,
-which will prevent Sentry error capturing and reporting.
+You can disable Sentry error tracking by setting the `sentry` flag to false, which will prevent client-side error reports from being sent to us.
 
 ```js
 hCaptchaLoader({ sentry: false });
