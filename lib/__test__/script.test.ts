@@ -110,7 +110,7 @@ describe('fetchScript', () => {
       const [script] = nodes;
       expect(script.src).toMatch('https://js.hcaptcha.com/1/api.js');
       expect(script.async).toBeTruthy();
-      xpect(script.crossOrigin).toEqual();
+      expect(script.crossOrigin).toEqual();
       expect(script.id).toEqual("anonymous");
     });
 
