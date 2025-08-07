@@ -7,7 +7,7 @@ export function fetchScript({
   scriptLocation,
   query,
   loadAsync = true,
-  crossOrigin,
+  crossOrigin = 'anonymous',
   apihost = 'https://js.hcaptcha.com',
   cleanup = true,
   secureApi = false,
