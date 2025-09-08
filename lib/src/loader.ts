@@ -9,7 +9,7 @@ import type { ILoaderParams, SentryHub } from './types';
 export const hCaptchaScripts = [];
 
 // Generate hCaptcha API script
-export function hCaptchaApi(params: ILoaderParams = { cleanup: false }, sentry: SentryHub): Promise<any> {
+export function hCaptchaApi(params: ILoaderParams = { cleanup: true }, sentry: SentryHub): Promise<any> {
 
   try {
 

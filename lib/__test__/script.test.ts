@@ -180,14 +180,8 @@ describe('fetchScript', () => {
       jest.resetAllMocks();
     });
 
-    it('should not remove script node by default', async () => {
+    it('should remove script node by default', async () => {
       await fetchScript();
-      const element = document.getElementById(SCRIPT_ID);
-      expect(element).not.toBeNull();
-    });
-
-    it('should remove script node if clean is set to true', async () => {
-      await fetchScript({ cleanup: true });
       const element = document.getElementById(SCRIPT_ID);
       expect(element).toBeNull();
     });

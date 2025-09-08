@@ -9,7 +9,7 @@ export function fetchScript({
   loadAsync = true,
   crossOrigin = 'anonymous',
   apihost = 'https://js.hcaptcha.com',
-  cleanup = false,
+  cleanup = true,
   secureApi = false,
   scriptSource = ''
 }: IScriptParams = {},
