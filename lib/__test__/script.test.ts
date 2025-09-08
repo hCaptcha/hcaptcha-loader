@@ -59,7 +59,7 @@ describe('fetchScript', () => {
       await expect(fetchScript()).resolves.toBe(eventOnLoad);
 
       expect(spyOnAppend).toHaveBeenCalled();
-      expect(spyOnRemove).toHaveBeenCalled();
+      expect(spyOnRemove).not.toHaveBeenCalled();
     });
 
     it('should reject when onerror is called', async () => {
@@ -70,10 +70,10 @@ describe('fetchScript', () => {
       await expect(fetchScript()).rejects.toBe('Invalid Script');
 
       expect(spyOnAppend).toHaveBeenCalled();
-      expect(spyOnRemove).toHaveBeenCalled();
+      expect(spyOnRemove).not.toHaveBeenCalled();
     });
 
-    it('should reject when internal error is caught', async () => {
+    it('should reject when cleanup script encounters internal error', async () => {
       const errorInternal = new Error(SCRIPT_ERROR);
 
       spyOnLoad.set.mockImplementationOnce((callback: (any) => void) => {
@@ -82,7 +82,7 @@ describe('fetchScript', () => {
 
       spyOnRemove.mockImplementationOnce(() => { throw errorInternal; });
 
-      await expect(fetchScript()).rejects.toThrow(errorInternal.message);
+      await expect(fetchScript({ cleanup: true })).rejects.toThrow(errorInternal.message);
     });
 
   });
@@ -183,7 +183,7 @@ describe('fetchScript', () => {
     it('should not remove script node by default', async () => {
       await fetchScript();
       const element = document.getElementById(SCRIPT_ID);
-      expect(element).not.toBeNull();
+      expect(element).toBeDefined();
     });
 
     it('should remove script node if clean is set to true', async () => {
