@@ -6,11 +6,16 @@ This is a JavaScript library to easily configure the loading of the [hCaptcha](h
 >
 > Sign up at [hCaptcha](https://www.hcaptcha.com) to get your sitekey today. **You need a sitekey to use this library.**
 
-1. [Installation](#installation)
-2. [Implementation](#implementation)
-3. [Props](#props)
-4. [Legacy Support](#legacy-support)
-5. [CSP](#CSP)
+- [hCaptcha Loader](#hcaptcha-loader)
+  - [Installation](#installation)
+  - [Implementation](#implementation)
+  - [Props](#props)
+  - [Legacy Support](#legacy-support)
+    - [Import Bundle(s)](#import-bundles)
+    - [TypeScript](#typescript)
+    - [CDN](#cdn)
+  - [CSP](#csp)
+  - [Sentry](#sentry)
 
 ## Installation
 ```
@@ -51,6 +56,7 @@ const { response } = await hcaptcha.execute({ async: true });
 | `recaptchacompat` | String      | No       | `-`                                | See enterprise docs.                                                                                                                                      |
 | `reportapi`       | String      | No       | `-`                                | See enterprise docs.                                                                                                                                      |
 | `sentry`          | Boolean     | No       | `-`                                | See enterprise docs.                                                                                                                                      |
+| `uj`              | Boolean     | No       | `-`                                | See enterprise docs.                                                                                                                                      |
 | `custom`          | Boolean     | No       | `-`                                | See enterprise docs.                                                                                                                                      |
 
 

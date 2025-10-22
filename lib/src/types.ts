@@ -7,6 +7,7 @@ export interface IScriptParams {
     cleanup?: boolean;
     query?: string;
     crossOrigin?: string;
+    uj?: boolean;
 }
 
 export interface ILoaderParams extends IScriptParams {
@@ -21,6 +22,7 @@ export interface ILoaderParams extends IScriptParams {
     recaptchacompat?: string;
     hl?: string;
     cleanup?: boolean;
+    uj?: boolean;
 }
 
 export interface SentryHub {
