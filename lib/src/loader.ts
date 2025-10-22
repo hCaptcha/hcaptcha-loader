@@ -60,6 +60,7 @@ export function hCaptchaApi(params: ILoaderParams = { cleanup: false }, sentry: 
             host: params.host,
             recaptchacompat: params.recaptchacompat,
             hl: params.hl,
+            uj: params.uj,
           });
 
           await fetchScript(
