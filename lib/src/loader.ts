@@ -1,4 +1,4 @@
-import { generateQuery, getFrame, getMountElement } from './utils';
+import { delay, generateQuery, getFrame, getMountElement } from './utils';
 import { HCAPTCHA_LOAD_FN_NAME, MAX_RETRIES, RETRY_DELAY, SCRIPT_ERROR, SCRIPT_ID, SENTRY_TAG } from './constants';
 import { initSentry } from './sentry';
 import { fetchScript } from './script';
@@ -121,10 +121,6 @@ export function hCaptchaApi(params: ILoaderParams = { cleanup: false }, sentry: 
     sentry.captureException(error);
     return Promise.reject(new Error(SCRIPT_ERROR));
   }
-}
-
-function delay(ms: number): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 export async function loadScript(
