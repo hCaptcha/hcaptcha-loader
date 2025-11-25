@@ -81,7 +81,7 @@ describe('hCaptchaLoader', () => {
       mockFetchScript.mockRejectedValueOnce(SCRIPT_ERROR);
       mockFetchScript.mockResolvedValueOnce(SCRIPT_COMPLETE);
 
-      const promise = hCaptchaLoader({ sentry: false });
+      const promise = hCaptchaLoader({ sentry: false, retryDelay: 0 });
 
       await waitFor(() => {
         expect(mockFetchScript).toHaveBeenCalledTimes(2);
@@ -97,7 +97,7 @@ describe('hCaptchaLoader', () => {
       mockFetchScript.mockRejectedValueOnce(SCRIPT_ERROR);
       mockFetchScript.mockResolvedValueOnce(SCRIPT_COMPLETE);
 
-      const promise = hCaptchaLoader({ sentry: false });
+      const promise = hCaptchaLoader({ sentry: false, retryDelay: 0 });
 
       await waitFor(() => {
         expect(mockFetchScript).toHaveBeenCalledTimes(3);
@@ -112,7 +112,7 @@ describe('hCaptchaLoader', () => {
       mockFetchScript.mockRejectedValue('test error');
 
       try {
-        await hCaptchaLoader({ sentry: false, cleanup: true });
+        await hCaptchaLoader({ sentry: false, cleanup: true, retryDelay: 0 });
       } catch (error) {
         expect(mockFetchScript).toBeCalledTimes(3);
         expect(error.message).toBe(SCRIPT_ERROR);
@@ -131,7 +131,7 @@ describe('hCaptchaLoader', () => {
       mockFetchScript.mockRejectedValue(SCRIPT_ERROR);
 
       try {
-        await hCaptchaLoader({ sentry: false });
+        await hCaptchaLoader({ sentry: false, retryDelay: 0 });
       } catch(error) {
         expect(error.message).toEqual(SCRIPT_ERROR);
       }
