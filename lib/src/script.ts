@@ -50,6 +50,7 @@ onError?: (message) => void
       if (onError) {
         onError(script.src);
       }
+      script?.remove();
       onComplete(event, reject);
     };
 
