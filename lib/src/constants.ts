@@ -6,6 +6,7 @@ export const SCRIPT_COMPLETE = 'script-loaded';
 export const SENTRY_TAG = '@hCaptcha/loader';
 
 export const MAX_RETRIES = 2;
+export const RETRY_DELAY = 1000;
 
 export enum SentryContext {
   ANDROID = 'Android',
