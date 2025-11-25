@@ -1,5 +1,5 @@
 import { delay, generateQuery, getFrame, getMountElement } from './utils';
-import { HCAPTCHA_LOAD_FN_NAME, MAX_RETRIES, RETRY_DELAY, SCRIPT_ERROR, SCRIPT_ID, SENTRY_TAG } from './constants';
+import { HCAPTCHA_LOAD_FN_NAME, MAX_RETRIES, RETRY_DELAY, SCRIPT_ERROR, SENTRY_TAG } from './constants';
 import { initSentry } from './sentry';
 import { fetchScript } from './script';
 
@@ -7,25 +7,6 @@ import type { ILoaderParams, SentryHub } from './types';
 
 // Prevent loading API script multiple times
 export const hCaptchaScripts = [];
-
-// Tracks if the last load attempt failed (to allow automatic retries)
-let lastLoadFailed = false;
-
-export function resetLoader(scriptLocation?: HTMLElement) {
-  hCaptchaScripts.splice(0); // Clears promises
-
-  const element = getMountElement(scriptLocation);
-  const frame: any = getFrame(element);
-
-  const existingScript = frame.document.getElementById(SCRIPT_ID);
-  existingScript?.remove();
-
-  if (frame.window[HCAPTCHA_LOAD_FN_NAME]) {
-    delete frame.window[HCAPTCHA_LOAD_FN_NAME];
-  }
-
-  lastLoadFailed = false;
-}
 
 // Generate hCaptcha API script
 export function hCaptchaApi(params: ILoaderParams = { cleanup: false }, sentry: SentryHub): Promise<any> {
@@ -133,11 +114,7 @@ export async function loadScript(
   const message = retries < maxRetries ? 'Retry loading hCaptcha Api' : 'Exceeded maximum retries';
 
   try {
-    const result = await hCaptchaApi(params, sentry);
-
-    lastLoadFailed = false;
-
-    return result;
+    return await hCaptchaApi(params, sentry);
   } catch (error) {
 
     sentry.addBreadcrumb({
@@ -146,8 +123,6 @@ export async function loadScript(
     });
 
     if (retries >= maxRetries) {
-      lastLoadFailed = true;
-
       sentry.captureException(error);
       return Promise.reject(error);
     } else {
@@ -166,16 +141,6 @@ export async function loadScript(
 
 export async function hCaptchaLoader(params: ILoaderParams = {}) {
   const sentry = initSentry(params.sentry);
-
-  // Resets state for fresh retry
-  if (lastLoadFailed) {
-    sentry.addBreadcrumb({
-      category: SENTRY_TAG,
-      message: 'Resetting loader after previous failure',
-    });
-
-    resetLoader(params.scriptLocation);
-  }
 
   return await loadScript(params, sentry);
 }
