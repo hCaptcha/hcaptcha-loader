@@ -12,7 +12,7 @@ export const hCaptchaScripts = [];
 let lastLoadFailed = false;
 
 export function resetLoader(scriptLocation?: HTMLElement) {
-  hCaptchaScripts.length = 0; // Clears promises
+  hCaptchaScripts.splice(0); // Clears promises
 
   const element = getMountElement(scriptLocation);
   const frame: any = getFrame(element);
