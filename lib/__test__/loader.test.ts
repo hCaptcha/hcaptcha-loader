@@ -81,7 +81,7 @@ describe('hCaptchaLoader', () => {
       mockFetchScript.mockRejectedValueOnce(SCRIPT_ERROR);
       mockFetchScript.mockResolvedValueOnce(SCRIPT_COMPLETE);
 
-      const promise = hCaptchaLoader({ sentry: false });
+      const promise = hCaptchaLoader({ sentry: false, retryDelay: 0 });
 
       await waitFor(() => {
         expect(mockFetchScript).toHaveBeenCalledTimes(2);
@@ -97,7 +97,7 @@ describe('hCaptchaLoader', () => {
       mockFetchScript.mockRejectedValueOnce(SCRIPT_ERROR);
       mockFetchScript.mockResolvedValueOnce(SCRIPT_COMPLETE);
 
-      const promise = hCaptchaLoader({ sentry: false });
+      const promise = hCaptchaLoader({ sentry: false, retryDelay: 0 });
 
       await waitFor(() => {
         expect(mockFetchScript).toHaveBeenCalledTimes(3);
@@ -112,11 +112,40 @@ describe('hCaptchaLoader', () => {
       mockFetchScript.mockRejectedValue('test error');
 
       try {
-        await hCaptchaLoader({ sentry: false, cleanup: true });
+        await hCaptchaLoader({ sentry: false, cleanup: true, retryDelay: 0 });
       } catch (error) {
         expect(mockFetchScript).toBeCalledTimes(3);
         expect(error.message).toBe(SCRIPT_ERROR);
       }
+    });
+
+    it('should wait retryDelay milliseconds between retry attempts', (done) => {
+      mockFetchScript.mockRejectedValue('test error');
+
+      const retryDelay = 100;
+      const startTime = Date.now();
+
+      hCaptchaLoader({ sentry: false, retryDelay }).catch(() => {
+        const elapsed = Date.now() - startTime;
+
+        // With 2 retries and 100ms delay each, then it should take at least 200ms
+        expect(elapsed).toBeGreaterThanOrEqual(200);
+        expect(mockFetchScript).toBeCalledTimes(3);
+        
+        done();
+      });
+    });
+
+    it('should respect custom maxRetries value', (done) => {
+      mockFetchScript.mockRejectedValue('test error');
+
+      hCaptchaLoader({ sentry: false, maxRetries: 5, retryDelay: 0 }).catch((error: Error) => {
+        // 1 initial + 5 retries = 6 total calls
+        expect(mockFetchScript).toBeCalledTimes(6);
+        expect(error.message).toBe(SCRIPT_ERROR);
+
+        done();
+      });
     });
   });
 
@@ -131,7 +160,7 @@ describe('hCaptchaLoader', () => {
       mockFetchScript.mockRejectedValue(SCRIPT_ERROR);
 
       try {
-        await hCaptchaLoader({ sentry: false });
+        await hCaptchaLoader({ sentry: false, retryDelay: 0 });
       } catch(error) {
         expect(error.message).toEqual(SCRIPT_ERROR);
       }

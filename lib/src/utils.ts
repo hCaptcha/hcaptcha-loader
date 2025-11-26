@@ -72,6 +72,10 @@ function getBrowser(): BrowserContext {
   return { name, version };
 }
 
+export function delay(ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 function getDevice(): DeviceContext {
   const userAgent = navigator.userAgent;
 

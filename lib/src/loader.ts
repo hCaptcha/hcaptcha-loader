@@ -1,5 +1,5 @@
-import { generateQuery, getFrame, getMountElement } from './utils';
-import { HCAPTCHA_LOAD_FN_NAME, MAX_RETRIES, SCRIPT_ERROR, SENTRY_TAG } from './constants';
+import { delay, generateQuery, getFrame, getMountElement } from './utils';
+import { HCAPTCHA_LOAD_FN_NAME, MAX_RETRIES, RETRY_DELAY, SCRIPT_ERROR, SENTRY_TAG } from './constants';
 import { initSentry } from './sentry';
 import { fetchScript } from './script';
 
@@ -104,8 +104,14 @@ export function hCaptchaApi(params: ILoaderParams = { cleanup: false }, sentry: 
   }
 }
 
-export async function loadScript(params, sentry, retries = 0) {
-  const message = retries < MAX_RETRIES ? 'Retry loading hCaptcha Api' : 'Exceeded maximum retries';
+export async function loadScript(
+  params: ILoaderParams,
+  sentry: SentryHub,
+  retries = 0
+): Promise<any> {
+  const maxRetries = params.maxRetries ?? MAX_RETRIES;
+  const retryDelay = params.retryDelay ?? RETRY_DELAY;
+  const message = retries < maxRetries ? 'Retry loading hCaptcha Api' : 'Exceeded maximum retries';
 
   try {
     return await hCaptchaApi(params, sentry);
@@ -116,16 +122,22 @@ export async function loadScript(params, sentry, retries = 0) {
       message,
     });
 
-    if (retries >= MAX_RETRIES) {
+    if (retries >= maxRetries) {
       sentry.captureException(error);
       return Promise.reject(error);
     } else {
+      sentry.addBreadcrumb({
+        category: SENTRY_TAG,
+        message: `Waiting ${retryDelay}ms before retry attempt ${retries + 1}`,
+      });
+
+      await delay(retryDelay);
       retries += 1;
+
       return loadScript(params, sentry, retries);
     }
   }
 }
-
 
 export async function hCaptchaLoader(params: ILoaderParams = {}) {
   const sentry = initSentry(params.sentry);

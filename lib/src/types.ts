@@ -23,6 +23,8 @@ export interface ILoaderParams extends IScriptParams {
     hl?: string;
     cleanup?: boolean;
     uj?: boolean;
+    maxRetries?: number;
+    retryDelay?: number;
 }
 
 export interface SentryHub {
