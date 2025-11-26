@@ -119,34 +119,33 @@ describe('hCaptchaLoader', () => {
       }
     });
 
-    it('should wait retryDelay milliseconds between retry attempts', async () => {
+    it('should wait retryDelay milliseconds between retry attempts', (done) => {
       mockFetchScript.mockRejectedValue('test error');
 
       const retryDelay = 100;
       const startTime = Date.now();
 
-      try {
-        await hCaptchaLoader({ sentry: false, retryDelay });
-      } catch (error) {
+      hCaptchaLoader({ sentry: false, retryDelay }).catch(() => {
         const elapsed = Date.now() - startTime;
 
         // With 2 retries and 100ms delay each, then it should take at least 200ms
         expect(elapsed).toBeGreaterThanOrEqual(200);
         expect(mockFetchScript).toBeCalledTimes(3);
-      }
+        
+        done();
+      });
     });
 
-    it('should respect custom maxRetries value', async () => {
+    it('should respect custom maxRetries value', (done) => {
       mockFetchScript.mockRejectedValue('test error');
 
-      try {
-        await hCaptchaLoader({ sentry: false, maxRetries: 5, retryDelay: 0 });
-      } catch (error) {
-
+      hCaptchaLoader({ sentry: false, maxRetries: 5, retryDelay: 0 }).catch((error: Error) => {
         // 1 initial + 5 retries = 6 total calls
         expect(mockFetchScript).toBeCalledTimes(6);
         expect(error.message).toBe(SCRIPT_ERROR);
-      }
+
+        done();
+      });
     });
   });
 
