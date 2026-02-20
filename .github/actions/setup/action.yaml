@@ -6,7 +6,5 @@ runs:
   steps:
     - name: Setup environment
       uses: ./.github/actions/environment
-    - name: Install dependencies
-      uses: ./.github/actions/dependencies
     - name: Install playwright browsers
       uses: ./.github/actions/playwright
