@@ -39,8 +39,8 @@
   "devDependencies": {
     "@loader/demo": "workspace:^",
     "@loader/lib": "workspace:^",
-    "@playwright/experimental-ct-react": "^1.33.0",
-    "@playwright/test": "^1.33.0",
+    "@playwright/experimental-ct-react": "1.58.2",
+    "@playwright/test": "1.58.2",
     "@types/node": "^18.11.18",
     "http-server": "^14.1.1"
   }
