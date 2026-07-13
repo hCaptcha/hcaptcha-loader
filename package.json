@@ -12,12 +12,24 @@
   "main": "./dist/index.mjs",
   "types": "./dist/types/src/index.d.ts",
   "exports": {
-    "import": "./dist/index.mjs",
-    "require": "./dist/index.cjs"
+    ".": {
+      "types": "./dist/types/src/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./source": {
+      "types": "./source.d.ts",
+      "react-native": "./source.js",
+      "import": "./source.js",
+      "require": "./dist/source.cjs",
+      "default": "./source.js"
+    }
   },
   "files": [
     "README.md",
     "dist",
+    "source.d.ts",
+    "source.js",
     "!**/*.tsbuildinfo"
   ],
   "repository": {
@@ -33,7 +45,8 @@
     "fix:lint": "pnpm -r --stream run fix:lint",
     "test:lint": "pnpm -r --stream run test:lint",
     "test:types": "pnpm -r --stream run test:types",
-    "test:unit": "pnpm -r --stream run test:unit",
+    "test:unit": "pnpm -r --stream run test:unit && pnpm run test:source",
+    "test:source": "pnpm run build:lib && node --test ./test/source-export.test.mjs",
     "test:integration": "playwright test -c playwright.config.ts"
   },
   "devDependencies": {
