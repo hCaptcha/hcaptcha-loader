@@ -19,10 +19,8 @@
     },
     "./source": {
       "types": "./source.d.ts",
-      "react-native": "./source.js",
       "import": "./source.js",
-      "require": "./dist/source.cjs",
-      "default": "./source.js"
+      "require": "./dist/source.cjs"
     }
   },
   "files": [
