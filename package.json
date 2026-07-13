@@ -17,10 +17,10 @@
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
     },
-    "./source": {
-      "types": "./dist/source.d.ts",
-      "import": "./dist/source.mjs",
-      "require": "./dist/source.cjs"
+    "./inline": {
+      "types": "./dist/types/src/inline.d.ts",
+      "import": "./dist/inline.mjs",
+      "require": "./dist/inline.cjs"
     }
   },
   "files": [
