@@ -60,3 +60,5 @@ jobs:
         uses: ./.github/actions/setup
       - name: Run Unit Tests
         run:  pnpm run test:unit
+      - name: Run Package Export Tests
+        run: pnpm run test:exports

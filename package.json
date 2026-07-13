@@ -18,16 +18,14 @@
       "require": "./dist/index.cjs"
     },
     "./source": {
-      "types": "./source.d.ts",
-      "import": "./source.js",
+      "types": "./dist/source.d.ts",
+      "import": "./dist/source.mjs",
       "require": "./dist/source.cjs"
     }
   },
   "files": [
     "README.md",
     "dist",
-    "source.d.ts",
-    "source.js",
     "!**/*.tsbuildinfo"
   ],
   "repository": {
@@ -41,10 +39,10 @@
     "display:demo": "http-server ./ --cors -d -o ./demo/src",
     "serve:demo": "http-server ./",
     "fix:lint": "pnpm -r --stream run fix:lint",
-    "test:lint": "pnpm -r --stream run test:lint",
+    "test:lint": "eslint -c .eslintrc.json lib/esbuild.config.js __test__/source-export.test.mjs && pnpm -r --stream run test:lint",
     "test:types": "pnpm -r --stream run test:types",
-    "test:unit": "pnpm -r --stream run test:unit && pnpm run test:source",
-    "test:source": "pnpm run build:lib && node --test ./test/source-export.test.mjs",
+    "test:unit": "pnpm -r --stream run test:unit",
+    "test:exports": "pnpm run build:lib && node --test ./__test__/source-export.test.mjs",
     "test:integration": "playwright test -c playwright.config.ts"
   },
   "devDependencies": {
