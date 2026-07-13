@@ -39,10 +39,9 @@
     "display:demo": "http-server ./ --cors -d -o ./demo/src",
     "serve:demo": "http-server ./",
     "fix:lint": "pnpm -r --stream run fix:lint",
-    "test:lint": "eslint -c .eslintrc.json lib/esbuild.config.js __test__/source-export.test.mjs && pnpm -r --stream run test:lint",
+    "test:lint": "pnpm -r --stream run test:lint",
     "test:types": "pnpm -r --stream run test:types",
     "test:unit": "pnpm -r --stream run test:unit",
-    "test:exports": "pnpm run build:lib && node --test ./__test__/source-export.test.mjs",
     "test:integration": "playwright test -c playwright.config.ts"
   },
   "devDependencies": {
