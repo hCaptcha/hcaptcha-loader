@@ -17,10 +17,13 @@
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
     },
+    "./browser": {
+      "types": "./dist/types/src/browser.d.ts",
+      "import": "./dist/index.browser.js"
+    },
     "./inline": {
       "types": "./dist/types/src/inline.d.ts",
-      "import": "./dist/inline.mjs",
-      "require": "./dist/inline.cjs"
+      "import": "./dist/index.inline.js"
     }
   },
   "files": [
