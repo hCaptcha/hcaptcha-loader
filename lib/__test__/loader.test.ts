@@ -59,25 +59,6 @@ describe('hCaptchaLoader', () => {
       });
     });
 
-    it('should include orientation in the script query', async () => {
-      cleanupScripts();
-      mockFetchScript.mockResolvedValueOnce(SCRIPT_COMPLETE);
-
-      const promise = hCaptchaLoader({ orientation: 'landscape', sentry: false });
-
-      await waitFor(() => {
-        expect(mockFetchScript).toHaveBeenCalledWith(
-          expect.objectContaining({
-            query: expect.stringContaining('orientation=landscape'),
-          }),
-          expect.any(Function)
-        );
-
-        window[HCAPTCHA_LOAD_FN_NAME]();
-        expect(promise).resolves.toEqual((window as any).hcaptcha);
-      });
-    });
-
     it('should not fetch script since it was already loaded', async () => {
       const result = await hCaptchaLoader({ sentry: false });
       expect(result).toEqual((window as any).hcaptcha);

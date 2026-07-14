@@ -21,7 +21,6 @@ export interface ILoaderParams extends IScriptParams {
     host?: string;
     recaptchacompat?: string;
     hl?: string;
-    orientation?: string;
     cleanup?: boolean;
     uj?: boolean;
     maxRetries?: number;

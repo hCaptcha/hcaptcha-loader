@@ -60,7 +60,6 @@ export function hCaptchaApi(params: ILoaderParams = { cleanup: false }, sentry: 
             host: params.host,
             recaptchacompat: params.recaptchacompat,
             hl: params.hl,
-            orientation: params.orientation,
             uj: params.uj,
           });
 
