@@ -23,7 +23,7 @@
     },
     "./inline": {
       "types": "./dist/types/src/inline.d.ts",
-      "import": "./dist/index.inline.js"
+      "import": "./dist/inline.js"
     }
   },
   "files": [
