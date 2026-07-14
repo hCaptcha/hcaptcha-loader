@@ -19,7 +19,7 @@
     },
     "./browser": {
       "types": "./dist/types/src/browser.d.ts",
-      "import": "./dist/index.browser.js"
+      "import": "./dist/browser.js"
     },
     "./inline": {
       "types": "./dist/types/src/inline.d.ts",
