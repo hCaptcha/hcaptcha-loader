@@ -1,7 +1,7 @@
 {
   "name": "@hcaptcha/loader",
   "description": "This is a JavaScript library to easily configure the loading of the hCaptcha JS client SDK with built-in error handling.",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "author": "hCaptcha team and contributors",
   "license": "MIT",
   "keywords": [
@@ -23,11 +23,14 @@
     },
     "./inline": {
       "types": "./dist/types/src/inline.d.ts",
-      "import": "./dist/inline.js"
+      "import": "./dist/inline.js",
+      "require": "./dist/inline.cjs",
+      "default": "./dist/inline.js"
     }
   },
   "files": [
     "README.md",
+    "inline.js",
     "dist",
     "!**/*.tsbuildinfo"
   ],
