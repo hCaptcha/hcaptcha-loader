@@ -10,7 +10,12 @@ export const RETRY_DELAY = 1000;
 
 export enum SentryContext {
   ANDROID = 'Android',
+  ANDROID_WEBVIEW = 'Android WebView',
   IOS = 'iOS',
+  IOS_WEBVIEW = 'iOS WebView',
+  IPAD = 'iPad',
+  IPHONE = 'iPhone',
+  IPOD = 'iPod',
   LINUX = 'Linux',
   MAC = 'Mac',
   WINDOWS = 'Windows',
