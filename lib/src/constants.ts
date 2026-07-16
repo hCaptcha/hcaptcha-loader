@@ -15,6 +15,7 @@ export enum SentryContext {
   IOS_WEBVIEW = 'iOS WebView',
   IPAD = 'iPad',
   IPHONE = 'iPhone',
+  IPOD = 'iPod',
   LINUX = 'Linux',
   MAC = 'Mac',
   WINDOWS = 'Windows',
