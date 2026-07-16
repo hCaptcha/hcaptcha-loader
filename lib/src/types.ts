@@ -40,7 +40,12 @@ export interface ScopeTag {
 
 export interface BrowserContext {
     name: string;
-    version: string;
+    version?: string;
+}
+
+export interface OperatingSystemContext {
+    name: string;
+    version?: string;
 }
 
 export interface DeviceContext {
